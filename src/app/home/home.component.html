@@ -1,4 +1,9 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <h2>${{total}}</h2>
+  <ion-fab slot="fixed" horizontal="end" vertical="top">
+    <ion-fab-button size="small" (click)="onAdd()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
   <app-list-view [updateList]="expenseService.getAll()"></app-list-view>
 </ion-content>

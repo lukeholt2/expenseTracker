@@ -37,8 +37,6 @@ export class AuthenticationService {
   }
 
   public login(username: string, password: string) {
-
-    console.log('logging in!')
     const endpoint = `${this.baseEndpoint}/Authenticate`;
     return this.http.post<any>(endpoint, { username, password })
       .pipe(map(user => {
