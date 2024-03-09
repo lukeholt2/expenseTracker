@@ -1,0 +1,7 @@
+{
+  "name": "plutus",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
