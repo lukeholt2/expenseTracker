@@ -1,0 +1,5 @@
+<ion-list *ngIf="updateList">
+  <ion-item *ngFor="let expense of updateList | async">
+    <ion-label>{{expense.amount}}</ion-label>
+  </ion-item>
+</ion-list>
