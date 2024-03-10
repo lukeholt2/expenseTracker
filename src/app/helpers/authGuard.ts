@@ -16,7 +16,7 @@ export class AuthGuard  {
         const currentUser = this.authenticationService.currentUserToken;
        
         if (currentUser) {
-            // authorised so return true
+            // authorized so return true
             return true;
         }
 
