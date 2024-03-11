@@ -5,5 +5,14 @@
       <ion-icon name="add-circle-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+  <ion-list>
+    <ion-item>
+      <ion-select interface="popover" value="listFilter" placeholder="All">
+        <ion-select-option value="all">All</ion-select-option>
+        <ion-select-option value="month">Month</ion-select-option>
+        <ion-select-option value="month">Year</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
   <app-list-view [updateList]="expenseService.getAll()"></app-list-view>
 </ion-content>
