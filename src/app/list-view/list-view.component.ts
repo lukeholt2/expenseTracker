@@ -10,10 +10,13 @@ import { Expense } from '../models/expense';
 export class ListViewComponent  implements OnInit {
 
 
-  @Input() updateList: Observable<Expense[]> = new BehaviorSubject<Expense[]>([]).asObservable();
+  @Input() updateList!: Observable<Expense[]>;
   
+  list: Expense[] = [];
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.updateList.subscribe((data) => this.list = data);
+  }
 
 }

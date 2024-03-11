@@ -1,5 +1,10 @@
-<ion-list *ngIf="updateList">
-  <ion-item *ngFor="let expense of updateList | async">
-    <ion-label>{{expense.amount}}</ion-label>
-  </ion-item>
-</ion-list>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let expense of list">
+      <ion-label>{{expense.date.toLocaleDateString()}}</ion-label>
+      <ion-label>${{expense.amount}}</ion-label>
+      <ion-label>{{expense.item}}</ion-label>
+      <ion-label>{{expense.location}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ExpenseService } from '../services/expense.service';
 import { Expense } from '../models/expense';
+import { ModalController } from '@ionic/angular';
+import { NewExpenseDialogComponent } from '../new-expense-dialog/new-expense-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -9,21 +11,28 @@ import { Expense } from '../models/expense';
 })
 export class HomeComponent  implements OnInit {
 
-  constructor(public expenseService: ExpenseService) { }
+  constructor(public expenseService: ExpenseService, private modalCtrl: ModalController) { }
 
   total: number = 0;
 
   ngOnInit() {
     const today = new Date();
-    this.expenseService.getAll(today.getMonth(), today.getFullYear())
+    this.expenseService.getAll()
       .subscribe((data: Expense[]) => {
         this.total = 0;
         data.forEach((expense: Expense) => this.total += expense.amount);
       })
   }
 
-  onAdd(){
-    // TODO:
+  async onAdd(){
+    const modal = await this.modalCtrl.create({
+      component: NewExpenseDialogComponent,
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    this.expenseService.addExpense(data).subscribe((data) => console.log(data));
   }
+
 
 }

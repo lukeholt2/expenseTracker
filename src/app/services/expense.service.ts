@@ -26,11 +26,13 @@ export class ExpenseService {
     return this.http.put(endpoint, budget);
   }
 
-  public addExpense(expense: Expense, receiptImage: File) {
+  public addExpense(expense: Expense, receiptImage?: File) {
     const endpoint = `${this.baseEndpoint}`;
     const formData = new FormData();
     formData.append('expense', JSON.stringify(expense));
-    formData.append('image', receiptImage);
+    if(receiptImage){
+      formData.append('image', receiptImage);
+    }
     return this.http.post(endpoint, formData);
   }
 
@@ -42,7 +44,7 @@ export class ExpenseService {
       return this.http.delete(`${this.baseEndpoint}/${expense.id}`);
   }
 
-  public getAll(monthOfInterest?: number, yearOfInterest?: number){
+  public getAll(monthOfInterest?: number, yearOfInterest?: number) : Observable<Expense[]> {
     const endpoint = `${this.baseEndpoint}`;
 
     let queryParams: HttpParams = new HttpParams();
@@ -50,7 +52,7 @@ export class ExpenseService {
       queryParams = queryParams.append("monthOfInterest", monthOfInterest);
       queryParams = queryParams.append("yearOfInterest", yearOfInterest);
     }
-   
+
     return this.http.get<Expense[]>(endpoint, { params: queryParams} )
       .pipe(map((data: Expense[]) => data.map(d => new Expense().deserialize(d))));
   }
