@@ -17,7 +17,7 @@ export class HomeComponent  implements OnInit {
 
   ngOnInit() {
     const today = new Date();
-    this.expenseService.getAll()
+    this.expenseService.getAll(today.getDate(), today.getMonth())
       .subscribe((data: Expense[]) => {
         this.total = 0;
         data.forEach((expense: Expense) => this.total += expense.amount);
