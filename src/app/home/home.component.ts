@@ -31,7 +31,9 @@ export class HomeComponent  implements OnInit {
     modal.present();
 
     const { data, role } = await modal.onWillDismiss();
-    this.expenseService.addExpense(data).subscribe((data) => console.log(data));
+    if(role == 'confirm'){
+      this.expenseService.addExpense(data).subscribe((data) => console.log(data));
+    }
   }
 
 
