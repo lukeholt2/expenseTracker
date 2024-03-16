@@ -1,0 +1,17 @@
+variables:
+  API_TOKEN: "$ACCESS_TOKEN"
+  FORCE_DEPLOY: "false"
+  
+include:
+  - project: gitlab-instance-8c9d9f19/dev-tools/continuous-integration
+    file: 
+      - /node/install.gitlab-ci.yml
+      - /node/audit.gitlab-ci.yml
+      - ssh.gitlab-ci.yml
+      - create-release.gitlab-ci.yml
+      - generate-changelog.gitlab-ci.yml
+      - workflow.gitlab-ci.yml
+
+audit-modules:
+  variables:
+    AUDIT_LEVEL: moderate
