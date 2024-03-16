@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ExpenseService } from '../services/expense.service';
 import { Expense } from '../models/expense';
 import { ModalController } from '@ionic/angular';
 import { NewExpenseDialogComponent } from '../new-expense-dialog/new-expense-dialog.component';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 
 interface ListFilters {
-  month: number;
-  year: number
+  month?: number;
+  year?: number
 }
 
 @Component({
@@ -15,27 +16,53 @@ interface ListFilters {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
   constructor(public expenseService: ExpenseService, private modalCtrl: ModalController) {
-    const today = new Date();
-    this.expenseFilter = {
-      month: today.getMonth(),
-      year: today.getMonth()
-    }
+    // hack the event handler to also set our default values
+    this.updateFilter({ target: { value: 'Month' } });
   }
 
   total: number = 0;
-  listFilter: string = 'all'
+  listFilters: string[] = ['All', 'Month', 'Year'];
 
-  expenseFilter: ListFilters;
+  #expenses: BehaviorSubject<Expense[]> = new BehaviorSubject<Expense[]>([])
+  expenses$: Observable<Expense[]> = this.#expenses.asObservable();
 
-  ngOnInit() {
-    this.expenseService.getAll(this.expenseFilter.month, this.expenseFilter.year)
-      .subscribe((data: Expense[]) => {
+  // HACK: some of the filtering feels pretty hacky
+  expenseFilter: ListFilters = {
+    month: undefined,
+    year: undefined
+  };
+
+  private updateExpenseList() {
+    console.log(this.expenseFilter);
+    this.expenseService
+      .getAll(this.expenseFilter?.month, this.expenseFilter?.year)
+      .pipe(tap((expenses: Expense[]) => {
         this.total = 0;
-        data.forEach((expense: Expense) => this.total += expense.amount);
-      })
+        expenses.forEach((expense: Expense) => this.total += expense.amount);
+      }))
+      .subscribe((data: Expense[]) => this.#expenses.next(data));
+  }
+
+  updateFilter(event: any) {
+    const listFilter = event.target.value;
+    const today = new Date();
+    if (listFilter == 'All') {
+      this.expenseFilter.month = this.expenseFilter.year = undefined;
+    } else if (listFilter == 'Month') {
+      this.expenseFilter = {
+        month: today.getMonth() + 1,
+        year: today.getFullYear()
+      }
+    } else {
+      this.expenseFilter = {
+        month: undefined,
+        year: today.getFullYear()
+      }
+    }
+    this.updateExpenseList();
   }
 
   async onAdd() {

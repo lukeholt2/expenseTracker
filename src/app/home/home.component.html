@@ -7,12 +7,10 @@
   </ion-fab>
   <ion-list>
     <ion-item>
-      <ion-select interface="popover" value="listFilter" placeholder="All">
-        <ion-select-option value="all">All</ion-select-option>
-        <ion-select-option value="month">Month</ion-select-option>
-        <ion-select-option value="month">Year</ion-select-option>
+      <ion-select interface="popover" value="listFilter" placeholder='Month' (ionChange)="updateFilter($event)">
+        <ion-select-option *ngFor="let filter of listFilters" [value]="filter">{{ filter }}</ion-select-option>
       </ion-select>
     </ion-item>
   </ion-list>
-  <app-list-view [updateList]="expenseService.getAll()"></app-list-view>
+  <app-list-view [updateList]="expenses$"></app-list-view>
 </ion-content>
