@@ -19,14 +19,22 @@ audit-modules:
 
 deploy:
   stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
+    - if: $FORCE_DEPLOY == "true"
   before_script: 
     - apt install curl -y
     - !reference [ .install-node, before_script ]
     - !reference [.configure-ssh, before_script]
   script:
-    - npx ng build
+    - VERSION=$(npm pkg get version)
+    - 'curl --request POST --header "PRIVATE-TOKEN: ${API_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/repository/tags?tag_name=${VERSION}&ref=master"'
+    - npx ng build -c production
+    - scp -r $CI_PROJECT_DIR/dist ${PROD_USER}@${PROD_server}:~
+    - scp install.sh ${DEPLOY_USER}@${DEPLOY_SERVER}:~
+    - ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "bash install.sh"
   artifacts:
     paths:
-      - expenseapp/
-    name: "ExpenseApp"
+      - plutus/
+    name: "ExpenseUI"
     when: on_success
