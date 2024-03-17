@@ -27,9 +27,9 @@ deploy:
     - !reference [ .install-node, before_script ]
     - !reference [.configure-ssh, before_script]
   script:
-    - VERSION=$(npm pkg get version)
+    - VERSION=$( npm pkg get version | tr -d '"')
     - 'curl --request POST --header "PRIVATE-TOKEN: ${API_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/repository/tags?tag_name=${VERSION}&ref=master"'
-    - npx ng build -c production
+    - ionic build --prod
     - scp -r $CI_PROJECT_DIR/dist ${PROD_USER}@${PROD_server}:~
     - scp install.sh ${DEPLOY_USER}@${DEPLOY_SERVER}:~
     - ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "bash install.sh"
