@@ -4,7 +4,7 @@ import { Expense } from '../models/expense';
 import { ModalController } from '@ionic/angular';
 import { NewExpenseDialogComponent } from '../new-expense-dialog/new-expense-dialog.component';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-
+import {IONIC_DIRECTIVES} from 'ionic-angular';
 
 interface ListFilters {
   month?: number;
@@ -15,6 +15,7 @@ interface ListFilters {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  directives: [IONIC_DIRECTIVES]
 })
 export class HomeComponent {
 
