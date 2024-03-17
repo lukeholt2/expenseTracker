@@ -15,3 +15,18 @@ include:
 audit-modules:
   variables:
     AUDIT_LEVEL: moderate
+
+
+deploy:
+  stage: deploy
+  before_script: 
+    - apt install curl -y
+    - !reference [ .install-node, before_script ]
+    - !reference [.configure-ssh, before_script]
+  script:
+    - npx ng build
+  artifacts:
+    paths:
+      - expenseapp/
+    name: "ExpenseApp"
+    when: on_success
