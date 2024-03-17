@@ -4,7 +4,8 @@ import { Expense } from '../models/expense';
 import { ModalController } from '@ionic/angular';
 import { NewExpenseDialogComponent } from '../new-expense-dialog/new-expense-dialog.component';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import {IONIC_DIRECTIVES} from 'ionic-angular';
+import { addIcons } from 'ionicons'; 
+import { addCircle } from 'ionicons/icons';
 
 interface ListFilters {
   month?: number;
@@ -14,12 +15,13 @@ interface ListFilters {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  directives: [IONIC_DIRECTIVES]
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
 
   constructor(public expenseService: ExpenseService, private modalCtrl: ModalController) {
+    // manually add the circle icon... cause for some reason this is needed
+    addIcons({addCircle})
     // hack the event handler to also set our default values
     this.updateFilter({ target: { value: 'Month' } });
   }
