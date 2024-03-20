@@ -31,7 +31,7 @@ deploy:
     - VERSION=$( npm pkg get version | tr -d '"')
     - 'curl --request POST --header "PRIVATE-TOKEN: ${API_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/repository/tags?tag_name=${VERSION}&ref=master"'
     - ionic build --prod
-    - scp -r $CI_PROJECT_DIR/www ${PROD_USER}@${PROD_server}:~
+    - scp -r $CI_PROJECT_DIR/www ${PROD_USER}@${PROD_SERVER}:~
     - scp install.sh ${DEPLOY_USER}@${DEPLOY_SERVER}:~
     - ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "bash install.sh"
   artifacts:
