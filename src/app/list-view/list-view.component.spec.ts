@@ -9,9 +9,9 @@ describe('ListViewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListViewComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+    declarations: [ListViewComponent],
+    imports: [IonicModule.forRoot()]
+}).compileComponents();
 
     fixture = TestBed.createComponent(ListViewComponent);
     component = fixture.componentInstance;

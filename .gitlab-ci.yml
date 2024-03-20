@@ -15,3 +15,26 @@ include:
 audit-modules:
   variables:
     AUDIT_LEVEL: moderate
+
+
+deploy:
+  stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
+    - if: $FORCE_DEPLOY == "true"
+  before_script: 
+    - apt install curl -y
+    - !reference [ .install-node, before_script ]
+    - !reference [.configure-ssh, before_script]
+  script:
+    - VERSION=$( npm pkg get version | tr -d '"')
+    - 'curl --request POST --header "PRIVATE-TOKEN: ${API_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/repository/tags?tag_name=${VERSION}&ref=master"'
+    - ionic build --prod
+    - scp -r $CI_PROJECT_DIR/www ${PROD_USER}@${PROD_server}:~
+    - scp install.sh ${DEPLOY_USER}@${DEPLOY_SERVER}:~
+    - ssh ${DEPLOY_USER}@${DEPLOY_SERVER} "bash install.sh"
+  artifacts:
+    paths:
+      - plutus/
+    name: "ExpenseUI"
+    when: on_success
