@@ -6,6 +6,9 @@ import { NewExpenseDialogComponent } from '../new-expense-dialog/new-expense-dia
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { addIcons } from 'ionicons'; 
 import { addCircle } from 'ionicons/icons';
+import { IonContent, IonFab, IonFabButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption } from '@ionic/angular/standalone'
+import { ListViewComponent } from '../list-view/list-view.component';
+import { CommonModule } from '@angular/common';
 
 interface ListFilters {
   month?: number;
@@ -15,7 +18,9 @@ interface ListFilters {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  imports: [CommonModule, ListViewComponent, IonContent, IonFab, IonFabButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption],
+  standalone: true
 })
 export class HomeComponent {
 

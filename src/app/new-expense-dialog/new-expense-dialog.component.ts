@@ -5,7 +5,10 @@ import { Expense } from '../models/expense';
 import { ExpenseService } from '../services/expense.service';
 import { map, startWith } from 'rxjs/operators';
 import { ModalController } from '@ionic/angular';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { IonContent, IonHeader, IonButton, IonButtons, IonTitle, IonToolbar, IonInput, IonLabel, IonSelect, IonSelectOption } from '@ionic/angular/standalone'
+import { CommonModule } from '@angular/common';
 
 interface IExpenseForm{
   id: FormControl<number>;
@@ -20,7 +23,9 @@ interface IExpenseForm{
 @Component({
   selector: 'app-new-expense-dialog',
   templateUrl: './new-expense-dialog.component.html',
-  styleUrls: ['./new-expense-dialog.component.scss']
+  styleUrls: ['./new-expense-dialog.component.scss'],
+  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, IonContent, IonButton, IonTitle, IonButtons, IonHeader, IonToolbar, IonInput, IonLabel, IonSelect, IonSelectOption],
+  standalone: true
 })
 export class NewExpenseDialogComponent implements OnInit {
 

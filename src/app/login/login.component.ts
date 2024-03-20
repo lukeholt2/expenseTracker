@@ -3,8 +3,12 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
+import { IonContent, IonInput, IonButton } from '@ionic/angular/standalone';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
-interface LoginForm{
+interface LoginForm {
   username: FormControl<string>;
   password: FormControl<string>;
 }
@@ -12,7 +16,9 @@ interface LoginForm{
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  imports: [CommonModule, IonContent, IonInput, IonButton, MatFormFieldModule, ReactiveFormsModule],
+  standalone: true
 })
 export class LoginComponent implements OnInit {
 
@@ -71,7 +77,7 @@ export class LoginComponent implements OnInit {
           }
         },
         (error: any) => {
-            this.loading = false;
+          this.loading = false;
         });
   }
 }
