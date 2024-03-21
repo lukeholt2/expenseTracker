@@ -14,7 +14,7 @@ include:
 
 audit-modules:
   variables:
-    AUDIT_LEVEL: moderate
+    AUDIT_LEVEL: critical
 
 
 deploy:
