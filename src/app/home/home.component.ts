@@ -81,7 +81,8 @@ export class HomeComponent {
 
     const { data, role } = await modal.onWillDismiss();
     if (role == 'confirm') {
-      this.expenseService.addExpense(data).subscribe((data) => console.log(data));
+      this.expenseService.addExpense(data)
+        .subscribe(() => this.updateExpenseList());
     }
   }
 
