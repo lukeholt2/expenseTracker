@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output , ViewChild} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output , ViewChild} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Expense } from '../models/expense';
@@ -29,6 +29,10 @@ interface IExpenseForm{
 })
 export class NewExpenseDialogComponent implements OnInit {
 
+  @Input() expense?: Expense;
+
+
+  public title: string = 'Add';
   public customType: string = '';
 
   filteredCategories?: Observable<string[]>;
@@ -48,7 +52,10 @@ export class NewExpenseDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setExpense();
+    if(this.expense){
+      this.title = 'Edit'
+    }
+    this.setExpense(this.expense);
     // this.filteredCategories = this.form?.controls['category'].valueChanges
     //   .pipe(
     //     startWith(''),

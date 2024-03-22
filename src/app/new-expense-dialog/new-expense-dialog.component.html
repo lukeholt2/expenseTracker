@@ -4,7 +4,7 @@
         <ion-buttons slot="start">
           <ion-button (click)="cancel()">Cancel</ion-button>
         </ion-buttons>
-        <ion-title>Add Expense</ion-title>
+        <ion-title>{{ title }} Expense</ion-title>
         <ion-buttons slot="end">
           <ion-button [disabled]="form.invalid" (click)="SendExpense()" [strong]="true">Save</ion-button>
         </ion-buttons>
