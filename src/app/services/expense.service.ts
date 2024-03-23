@@ -48,8 +48,10 @@ export class ExpenseService {
     const endpoint = `${this.baseEndpoint}`;
 
     let queryParams: HttpParams = new HttpParams();
-    if(monthOfInterest !== undefined && yearOfInterest !== undefined){
+    if(monthOfInterest !== undefined){
       queryParams = queryParams.append("monthOfInterest", monthOfInterest);
+    }
+    if(yearOfInterest !== undefined){
       queryParams = queryParams.append("yearOfInterest", yearOfInterest);
     }
 

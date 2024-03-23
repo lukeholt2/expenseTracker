@@ -10,6 +10,9 @@
       <ion-select interface="popover" value="listFilter" placeholder='Month' (ionChange)="updateFilter($event)">
         <ion-select-option *ngFor="let filter of listFilters" [value]="filter">{{ filter }}</ion-select-option>
       </ion-select>
+      <ion-select interface="popover" value="listFilter.category" placeholder="All"  (ionChange)="updateCategory($event)">
+        <ion-select-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</ion-select-option>
+      </ion-select>
     </ion-item>
   </ion-list>
   <app-list-view [updateList]="expenses$"></app-list-view>
