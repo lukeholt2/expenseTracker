@@ -2,7 +2,7 @@ import { Component, ComponentRef, Input, OnInit, model } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Expense } from '../models/expense';
 import { ModalController } from '@ionic/angular';
-import { IonContent, IonLabel, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone'
+import { IonContent, IonLabel, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonGrid, IonRow, IonCol  } from '@ionic/angular/standalone'
 import { CommonModule } from '@angular/common';
 import { NewExpenseDialogComponent } from '../new-expense-dialog/new-expense-dialog.component';
 import { ExpenseService } from '../services/expense.service';
@@ -11,7 +11,7 @@ import { ExpenseService } from '../services/expense.service';
   selector: 'app-list-view',
   templateUrl: './list-view.component.html',
   styleUrls: ['./list-view.component.scss'],
-  imports: [CommonModule, IonContent, IonLabel, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent],
+  imports: [CommonModule, IonContent, IonLabel, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonGrid, IonRow, IonCol],
   standalone: true
 })
 export class ListViewComponent  implements OnInit {
