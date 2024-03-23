@@ -37,7 +37,7 @@ export class HomeComponent {
         'All',
         ...data
       ]
-    })
+    });
   }
 
   total: number = 0;
@@ -57,8 +57,7 @@ export class HomeComponent {
         this.total = 0;
         expenses.forEach((expense: Expense) => this.total += expense.amount);
       })).subscribe((data: Expense[]) => {
-        console.log(data);
-        this.#expenses.next(data)
+        this.#expenses.next(data.reverse()) // reverse the list to get it loosely in chronological order
       });
   }
 
