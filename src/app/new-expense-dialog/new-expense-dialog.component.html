@@ -4,7 +4,7 @@
         <ion-buttons slot="start">
           <ion-button (click)="cancel()">Cancel</ion-button>
         </ion-buttons>
-        <ion-title>Add Expense</ion-title>
+        <ion-title>{{ title }} Expense</ion-title>
         <ion-buttons slot="end">
           <ion-button [disabled]="form.invalid" (click)="SendExpense()" [strong]="true">Save</ion-button>
         </ion-buttons>
@@ -17,7 +17,6 @@
           <ion-input type="date" formControlName="date"/>
           <ion-label>Amount: </ion-label>
           <ion-input type="number" formControlName="amount"/>
-          <span matTextPrefix>$</span>
         </div>
         <div>
           <ion-label>Location: </ion-label>
@@ -30,12 +29,9 @@
         <div>
           <ion-label>Payment Type: </ion-label>
           <ion-select formControlName="paymentType">
-            <ion-select-option (click)="customType = ''" *ngFor="let type of paymentTypes | async" [value]="type">
+            <ion-select-option *ngFor="let type of paymentTypes | async" [value]="type">
               {{type}}
-              </ion-select-option>
-              <ion-select-option (click)="onCustomType()" [value]="customType" [disabled]="customTypeDisabled()">
-                <ion-input type="text" placeholder="Other" />
-              </ion-select-option>
+            </ion-select-option>
           </ion-select>
         </div>
         <div>

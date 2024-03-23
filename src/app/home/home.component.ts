@@ -4,71 +4,89 @@ import { Expense } from '../models/expense';
 import { ModalController } from '@ionic/angular';
 import { NewExpenseDialogComponent } from '../new-expense-dialog/new-expense-dialog.component';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { addIcons } from 'ionicons'; 
+import { addIcons } from 'ionicons';
 import { addCircle } from 'ionicons/icons';
-import { IonContent, IonFab, IonFabButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption } from '@ionic/angular/standalone'
+import { IonContent, IonFab, IonFabButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone'
 import { ListViewComponent } from '../list-view/list-view.component';
 import { CommonModule } from '@angular/common';
+import { Filter } from '../models/filter';
 
-interface ListFilters {
-  month?: number;
-  year?: number
-}
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [CommonModule, ListViewComponent, IonContent, IonFab, IonFabButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption],
+  imports: [CommonModule, ListViewComponent, IonContent, IonFab, IonFabButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption, IonGrid, IonRow, IonCol],
   standalone: true
 })
 export class HomeComponent {
 
   constructor(public expenseService: ExpenseService, private modalCtrl: ModalController) {
     // manually add the circle icon... cause for some reason this is needed
-    addIcons({addCircle})
+    addIcons({ addCircle })
+    const date = new Date();
+    this.expenseFilter = {
+      month: date.getMonth() + 1,
+      year: date.getFullYear(),
+      category: 'All'
+    };
     // hack the event handler to also set our default values
     this.updateFilter({ target: { value: 'Month' } });
+    this.expenseService.getCategories().subscribe((data) => {
+      this.categories = [
+        'All',
+        ...data
+      ]
+    });
   }
 
   total: number = 0;
   listFilters: string[] = ['All', 'Month', 'Year'];
 
+  categories: string[] = ['All']
+
   #expenses: BehaviorSubject<Expense[]> = new BehaviorSubject<Expense[]>([])
   expenses$: Observable<Expense[]> = this.#expenses.asObservable();
 
-  // HACK: some of the filtering feels pretty hacky
-  expenseFilter: ListFilters = {
-    month: undefined,
-    year: undefined
-  };
+  expenseFilter: Filter;
 
   private updateExpenseList() {
-    console.log(this.expenseFilter);
     this.expenseService
-      .getAll(this.expenseFilter?.month, this.expenseFilter?.year)
+      .getAll(this.expenseFilter?.month, this.expenseFilter?.year, this.expenseFilter.category)
       .pipe(tap((expenses: Expense[]) => {
         this.total = 0;
         expenses.forEach((expense: Expense) => this.total += expense.amount);
-      }))
-      .subscribe((data: Expense[]) => this.#expenses.next(data));
+      })).subscribe((data: Expense[]) => {
+        this.#expenses.next(data.reverse()) // reverse the list to get it loosely in chronological order
+      });
+  }
+
+  updateCategory(event: any){
+    this.expenseFilter.category = event.detail.value;
+    this.updateExpenseList();
   }
 
   updateFilter(event: any) {
-    const listFilter = event.target.value;
+    const listFilter: string = event.target.value;
+    console.log(listFilter);
     const today = new Date();
-    if (listFilter == 'All') {
-      this.expenseFilter.month = this.expenseFilter.year = undefined;
-    } else if (listFilter == 'Month') {
-      this.expenseFilter = {
-        month: today.getMonth() + 1,
-        year: today.getFullYear()
+    switch (listFilter.toUpperCase()) {
+      case 'ALL': {
+        this.expenseFilter.month = this.expenseFilter.year = undefined;
+        break;
       }
-    } else {
-      this.expenseFilter = {
-        month: undefined,
-        year: today.getFullYear()
+      case 'MONTH': {
+        this.expenseFilter.month = today.getMonth() + 1;
+        this.expenseFilter.year ??= today.getFullYear();
+        break;
       }
+      case 'YEAR': {
+        this.expenseFilter.month = undefined;
+        this.expenseFilter.year ??= today.getFullYear();
+        break;
+      }
+      default:
+        break;
     }
     this.updateExpenseList();
   }
@@ -81,9 +99,8 @@ export class HomeComponent {
 
     const { data, role } = await modal.onWillDismiss();
     if (role == 'confirm') {
-      this.expenseService.addExpense(data).subscribe((data) => console.log(data));
+      this.expenseService.addExpense(data)
+        .subscribe(() => this.updateExpenseList());
     }
   }
-
-
 }

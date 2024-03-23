@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output , ViewChild} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output , ViewChild} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Expense } from '../models/expense';
@@ -29,11 +29,12 @@ interface IExpenseForm{
 })
 export class NewExpenseDialogComponent implements OnInit {
 
-  public customType: string = '';
+  @Input() expense?: Expense;
+
+  public title: string = 'Add';
 
   filteredCategories?: Observable<string[]>;
   public availableCategories?: string[];
-
 
   /** Form group containing the new expense values */
   public form!: FormGroup<IExpenseForm>;
@@ -48,7 +49,10 @@ export class NewExpenseDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setExpense();
+    if(this.expense){
+      this.title = 'Edit'
+    }
+    this.setExpense(this.expense);
     // this.filteredCategories = this.form?.controls['category'].valueChanges
     //   .pipe(
     //     startWith(''),
@@ -102,18 +106,6 @@ export class NewExpenseDialogComponent implements OnInit {
 
   public addReceipt(event: any) {
     this.#receipt = event.target.files[0];
-  }
-
-  public onCustomType() {
-    if (this.customType && this.customType !== 'Other') {
-      this.form?.patchValue({'paymentType': this.customType});
-      this.#paymentTypesSubject.value.push(this.customType);
-    }
-    this.customType = '';
-  }
-
-  public customTypeDisabled() {
-    return !this.customType || this.customType === '' || this.customType === 'Other'
   }
 
   public UpdateCategory(cat: string){

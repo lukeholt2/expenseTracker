@@ -1,12 +1,32 @@
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let expense of list">
-      <ion-label>{{expense.date.toLocaleDateString()}}</ion-label>
-      <ion-label>${{expense.amount}}</ion-label>
-      <ion-label>{{expense.item}}</ion-label>
-      <ion-label>{{expense.location}}</ion-label>
-    </ion-item>
-  </ion-list>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-label>Date</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>Amount</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>Item</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>Location</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>Category</ion-label>
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+        <ion-item *ngFor="let expense of list" button (click)="onView(expense)">
+          <ion-label>{{expense.date.toLocaleDateString()}}</ion-label>
+          <ion-label>${{expense.amount}}</ion-label>
+          <ion-label>{{expense.item}}</ion-label>
+          <ion-label>{{expense.location}}</ion-label>
+          <ion-label>{{expense.category}}</ion-label>
+        </ion-item>
+      </ion-list>
   <ion-infinite-scroll>
     <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
