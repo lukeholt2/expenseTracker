@@ -31,13 +31,10 @@ export class NewExpenseDialogComponent implements OnInit {
 
   @Input() expense?: Expense;
 
-
   public title: string = 'Add';
-  public customType: string = '';
 
   filteredCategories?: Observable<string[]>;
   public availableCategories?: string[];
-
 
   /** Form group containing the new expense values */
   public form!: FormGroup<IExpenseForm>;
@@ -109,18 +106,6 @@ export class NewExpenseDialogComponent implements OnInit {
 
   public addReceipt(event: any) {
     this.#receipt = event.target.files[0];
-  }
-
-  public onCustomType() {
-    if (this.customType && this.customType !== 'Other') {
-      this.form?.patchValue({'paymentType': this.customType});
-      this.#paymentTypesSubject.value.push(this.customType);
-    }
-    this.customType = '';
-  }
-
-  public customTypeDisabled() {
-    return !this.customType || this.customType === '' || this.customType === 'Other'
   }
 
   public UpdateCategory(cat: string){
