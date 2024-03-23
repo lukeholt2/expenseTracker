@@ -44,7 +44,7 @@ export class ExpenseService {
       return this.http.delete(`${this.baseEndpoint}/${expense.id}`);
   }
 
-  public getAll(monthOfInterest?: number, yearOfInterest?: number) : Observable<Expense[]> {
+  public getAll(monthOfInterest?: number, yearOfInterest?: number, category?: string) : Observable<Expense[]> {
     const endpoint = `${this.baseEndpoint}`;
 
     let queryParams: HttpParams = new HttpParams();
@@ -53,6 +53,9 @@ export class ExpenseService {
     }
     if(yearOfInterest !== undefined){
       queryParams = queryParams.append("yearOfInterest", yearOfInterest);
+    }
+    if(category !== undefined){
+      queryParams = queryParams.append("category", category);
     }
 
     return this.http.get<Expense[]>(endpoint, { params: queryParams} )

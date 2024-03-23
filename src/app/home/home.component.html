@@ -7,12 +7,20 @@
   </ion-fab>
   <ion-list>
     <ion-item>
-      <ion-select interface="popover" value="listFilter" placeholder='Month' (ionChange)="updateFilter($event)">
-        <ion-select-option *ngFor="let filter of listFilters" [value]="filter">{{ filter }}</ion-select-option>
-      </ion-select>
-      <ion-select interface="popover" value="listFilter.category" placeholder="All"  (ionChange)="updateCategory($event)">
-        <ion-select-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</ion-select-option>
-      </ion-select>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-select interface="popover" placeholder='Month' (ionChange)="updateFilter($event)" fill="outline">
+              <ion-select-option *ngFor="let filter of listFilters" [value]="filter">{{ filter }}</ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col>
+            <ion-select interface="popover" placeholder="All" (ionChange)="updateCategory($event)" fill="outline">
+              <ion-select-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-item>
   </ion-list>
   <app-list-view [updateList]="expenses$"></app-list-view>
