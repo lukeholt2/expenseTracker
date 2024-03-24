@@ -117,9 +117,13 @@ export class HomeComponent {
         .subscribe(() => this.updateExpenseList());
     }
   }
-  
+
   logout(){
     this.authenticationService.logout();
     this.router.navigate(['/login'])
+  }
+
+  navigate(route: string){
+    this.router.navigate([route])
   }
 }

@@ -23,7 +23,7 @@ export class ExpenseService {
   
   public updateBudget(budget: Budget){
     const endpoint = `${this.baseEndpoint}/Budget`;
-    return this.http.put(endpoint, budget);
+    return this.http.put<Budget>(endpoint, budget);
   }
 
   public addExpense(expense: Expense, receiptImage?: File) {
