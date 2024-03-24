@@ -6,22 +6,36 @@ import { NewExpenseDialogComponent } from '../new-expense-dialog/new-expense-dia
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { addIcons } from 'ionicons';
 import { addCircle } from 'ionicons/icons';
-import { IonContent, IonFab, IonFabButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption, IonGrid, IonRow, IonCol } from '@ionic/angular/standalone'
+import { IonContent, IonFab, IonFabButton, IonIcon, IonList,
+     IonItem, IonSelect, IonSelectOption, IonLabel, IonHeader,
+     IonGrid, IonRow, IonCol, IonButtons, IonButton,
+     IonMenu, IonToolbar, IonMenuButton, IonTitle } from '@ionic/angular/standalone'
 import { ListViewComponent } from '../list-view/list-view.component';
 import { CommonModule } from '@angular/common';
 import { Filter } from '../models/filter';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../services/authentication.service';
 
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [CommonModule, ListViewComponent, IonContent, IonFab, IonFabButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption, IonGrid, IonRow, IonCol],
+  imports: [CommonModule, 
+    ListViewComponent, IonContent, IonFab, IonLabel,
+    IonFabButton, IonIcon, IonList, IonItem, IonHeader,
+    IonSelect, IonSelectOption, IonButtons, IonButton,
+    IonGrid, IonRow, IonCol, IonTitle,
+    IonMenu, IonToolbar, IonMenuButton
+  ],
   standalone: true
 })
 export class HomeComponent {
 
-  constructor(public expenseService: ExpenseService, private modalCtrl: ModalController) {
+  constructor(public expenseService: ExpenseService, 
+              private authenticationService: AuthenticationService,
+              private modalCtrl: ModalController, 
+              private router: Router) {
     // manually add the circle icon... cause for some reason this is needed
     addIcons({ addCircle })
     const date = new Date();
@@ -102,5 +116,10 @@ export class HomeComponent {
       this.expenseService.addExpense(data)
         .subscribe(() => this.updateExpenseList());
     }
+  }
+  
+  logout(){
+    this.authenticationService.logout();
+    this.router.navigate(['/login'])
   }
 }
