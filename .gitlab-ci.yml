@@ -39,3 +39,7 @@ deploy:
       - plutus/
     name: "ExpenseUI"
     when: on_success
+  environment:
+    name: production
+    url: https://expenseapp.com
+
