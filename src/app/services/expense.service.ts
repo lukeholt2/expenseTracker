@@ -20,8 +20,8 @@ export class ExpenseService {
     this.#currentExpensesSubject = new BehaviorSubject<Expense[]>([]);
     this.currentExpenses$ = this.#currentExpensesSubject.asObservable();
   }
-  
-  public updateBudget(budget: Budget){
+
+  public updateBudget(budget: Budget) {
     const endpoint = `${this.baseEndpoint}/Budget`;
     return this.http.put<Budget>(endpoint, budget);
   }
@@ -30,39 +30,51 @@ export class ExpenseService {
     const endpoint = `${this.baseEndpoint}`;
     const formData = new FormData();
     formData.append('expense', JSON.stringify(expense));
-    if(receiptImage){
+    if (receiptImage) {
       formData.append('image', receiptImage);
     }
     return this.http.post(endpoint, formData);
   }
 
-  public editExpense(expense: Expense){
-      return this.http.put(this.baseEndpoint, expense);
+  public editExpense(expense: Expense) {
+    return this.http.put(this.baseEndpoint, expense);
   }
 
-  public delete(expense: Expense){
-      return this.http.delete(`${this.baseEndpoint}/${expense.id}`);
+  public delete(expense: Expense) {
+    return this.http.delete(`${this.baseEndpoint}/${expense.id}`);
   }
 
-  public getAll(monthOfInterest?: number, yearOfInterest?: number, category?: string) : Observable<Expense[]> {
+  public getAll(monthOfInterest?: number, yearOfInterest?: number, category?: string): Observable<Expense[]> {
     const endpoint = `${this.baseEndpoint}`;
 
     let queryParams: HttpParams = new HttpParams();
-    if(monthOfInterest !== undefined){
+    if (monthOfInterest !== undefined) {
       queryParams = queryParams.append("monthOfInterest", monthOfInterest);
     }
-    if(yearOfInterest !== undefined){
+    if (yearOfInterest !== undefined) {
       queryParams = queryParams.append("yearOfInterest", yearOfInterest);
     }
-    if(category !== undefined){
+    if (category !== undefined) {
       queryParams = queryParams.append("category", category);
     }
 
-    return this.http.get<Expense[]>(endpoint, { params: queryParams} )
+    return this.http.get<Expense[]>(endpoint, { params: queryParams })
       .pipe(map((data: Expense[]) => data.map(d => new Expense().deserialize(d))));
   }
 
-  public loadFromFile(file: File, type: string, append: boolean){
+  public getCategories(monthOfInterest?: number, yearOfInterest?: number): Observable<string[]> {
+    const endpoint = `${this.baseEndpoint}/Categories`;
+    let queryParams: HttpParams = new HttpParams();
+    if (monthOfInterest !== undefined) {
+      queryParams = queryParams.append("monthOfInterest", monthOfInterest);
+    }
+    if (yearOfInterest !== undefined) {
+      queryParams = queryParams.append("yearOfInterest", yearOfInterest);
+    }
+    return this.http.get<string[]>(endpoint, { params: queryParams });
+  }
+
+  public loadFromFile(file: File, type: string, append: boolean) {
     const formData = new FormData();
     formData.append("file", file);
     formData.append('fileType', type);
@@ -70,27 +82,23 @@ export class ExpenseService {
     return this.http.post(`${this.baseEndpoint}/load`, formData);
   }
 
-  public getRecurring(){
+  public getRecurring() {
     const endpoint = `${this.baseEndpoint}/Recurring`;
     return this.http.get<Expense[]>(endpoint).pipe(map((data: Expense[]) => data.map(d => new Expense().deserialize(d))));
   }
 
-  public getPaymentTypes(){
+  public getPaymentTypes() {
     const endpoint = `${this.baseEndpoint}/PaymentTypes`;
     return this.http.get<string[]>(endpoint);
   }
 
-  public getYears(){
+  public getYears() {
     const endpoint = `${this.baseEndpoint}/Years`;
     return this.http.get<number[]>(endpoint);
   }
 
-  public getCategories(){
-    const endpoint = `${this.baseEndpoint}/Categories`;
-    return this.http.get<string[]>(endpoint);
-  }
 
-  public getBudget(){
+  public getBudget() {
     const endpoint = `${this.baseEndpoint}/Budget`;
     return this.http.get<Budget>(endpoint);
   }

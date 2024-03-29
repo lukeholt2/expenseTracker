@@ -44,12 +44,6 @@ export class HomeComponent {
     };
     // hack the event handler to also set our default values
     this.updateFilter({ target: { value: 'Month' } });
-    this.expenseService.getCategories().subscribe((data) => {
-      this.categories = [
-        'All',
-        ...data
-      ]
-    });
   }
 
   total: number = 0;
@@ -70,6 +64,15 @@ export class HomeComponent {
         expenses.forEach((expense: Expense) => this.total += expense.amount);
       })).subscribe((data: Expense[]) => {
         this.#expenses.next(data.reverse()) // reverse the list to get it loosely in chronological order
+      });
+      // when the list updates, the available categories should also be updated
+      // that way we don't see any categories that are irrelevant in the current context
+      this.expenseService.getCategories(this.expenseFilter?.month, this.expenseFilter?.year)
+        .subscribe((data) => {
+          this.categories = [
+            'All',
+            ...data
+          ]
       });
   }
 
