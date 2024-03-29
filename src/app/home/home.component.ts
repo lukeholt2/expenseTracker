@@ -13,8 +13,6 @@ import { IonContent, IonFab, IonFabButton, IonIcon, IonList,
 import { ListViewComponent } from '../list-view/list-view.component';
 import { CommonModule } from '@angular/common';
 import { Filter } from '../models/filter';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '../services/authentication.service';
 
 
 @Component({
