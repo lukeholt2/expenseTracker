@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         (data: any) => {
+          this.loginForm.reset();
           this.loading = false;
           if (data.passwordChangeRequired) {
             this.router.navigate(['../passwordChange'], { relativeTo: this.route });

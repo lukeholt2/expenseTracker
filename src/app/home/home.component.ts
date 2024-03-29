@@ -13,8 +13,6 @@ import { IonContent, IonFab, IonFabButton, IonIcon, IonList,
 import { ListViewComponent } from '../list-view/list-view.component';
 import { CommonModule } from '@angular/common';
 import { Filter } from '../models/filter';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '../services/authentication.service';
 
 
 @Component({
@@ -33,9 +31,7 @@ import { AuthenticationService } from '../services/authentication.service';
 export class HomeComponent {
 
   constructor(public expenseService: ExpenseService, 
-              private authenticationService: AuthenticationService,
-              private modalCtrl: ModalController, 
-              private router: Router) {
+              private modalCtrl: ModalController) {
     // manually add the circle icon... cause for some reason this is needed
     addIcons({ addCircle })
     const date = new Date();
@@ -46,12 +42,6 @@ export class HomeComponent {
     };
     // hack the event handler to also set our default values
     this.updateFilter({ target: { value: 'Month' } });
-    this.expenseService.getCategories().subscribe((data) => {
-      this.categories = [
-        'All',
-        ...data
-      ]
-    });
   }
 
   total: number = 0;
@@ -72,6 +62,15 @@ export class HomeComponent {
         expenses.forEach((expense: Expense) => this.total += expense.amount);
       })).subscribe((data: Expense[]) => {
         this.#expenses.next(data.reverse()) // reverse the list to get it loosely in chronological order
+      });
+      // when the list updates, the available categories should also be updated
+      // that way we don't see any categories that are irrelevant in the current context
+      this.expenseService.getCategories(this.expenseFilter?.month, this.expenseFilter?.year)
+        .subscribe((data) => {
+          this.categories = [
+            'All',
+            ...data
+          ]
       });
   }
 
@@ -116,14 +115,5 @@ export class HomeComponent {
       this.expenseService.addExpense(data)
         .subscribe(() => this.updateExpenseList());
     }
-  }
-
-  logout(){
-    this.authenticationService.logout();
-    this.router.navigate(['/login'])
-  }
-
-  navigate(route: string){
-    this.router.navigate([route])
   }
 }

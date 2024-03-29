@@ -2,13 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Budget } from '../models/budget';
 import { ExpenseService } from '../services/expense.service';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonLabel, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonGrid, IonRow, IonCol  } from '@ionic/angular/standalone'
+import { addIcons } from 'ionicons';
+import { trash } from 'ionicons/icons';
+import { 
+  IonContent, IonLabel, IonList, IonItem, IonIcon,
+  IonInfiniteScroll, IonInfiniteScrollContent, IonTitle, IonItemSliding, IonItemOption, IonItemOptions,
+  IonGrid, IonRow, IonCol, IonMenuButton, IonToolbar, IonButtons, IonButton, IonInput  } from '@ionic/angular/standalone'
 
 @Component({
   selector: 'app-budget',
   templateUrl: './budget.component.html',
   styleUrls: ['./budget.component.scss'],
-  imports: [CommonModule, IonContent, IonLabel, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonGrid, IonRow, IonCol],
+  imports: [
+    CommonModule, IonContent, IonLabel, IonButton, IonIcon,
+    IonList, IonItem, IonInfiniteScroll, IonTitle, IonInput,
+    IonInfiniteScrollContent, IonGrid, IonButtons,
+    IonItemSliding, IonItemOption, IonItemOptions,
+    IonRow, IonCol, IonMenuButton, IonToolbar],
   standalone: true
 })
 export class BudgetComponent  implements OnInit {
@@ -16,17 +26,37 @@ export class BudgetComponent  implements OnInit {
   public budget: Budget;
 
   public monthTitle: string;
+  public total: number = 0;
 
   public headers: string[] = ["Category", "Projected", "Actual", "remove"];
 
   constructor(private expenseService: ExpenseService) {
+    addIcons({ trash })
     this.budget = new Budget();
     const today = new Date();
     this.monthTitle = `TEST`
   }
 
   ngOnInit(): void {
-    this.expenseService.getBudget().subscribe(budget => this.budget = budget);
+    this.expenseService.getBudget()
+      .subscribe(budget => {
+        this.budget = budget;
+        this.budget.categoryLimits?.forEach((value) => this.total += value.actual);
+      });
+  }
+
+  updateCategory(event: any, index: number){
+    if(this.budget.categoryLimits && index < this.budget.categoryLimits.length){
+      this.budget.categoryLimits[index].category = event.target.value;
+      this.updateBudgetSettings();
+    }
+  }
+
+  updateLimit(event: any, index: number){
+    if(this.budget.categoryLimits && index < this.budget.categoryLimits.length){
+      this.budget.categoryLimits[index].limit = event.target.value;
+      this.updateBudgetSettings();
+    }
   }
 
   public updateBudgetSettings() {
