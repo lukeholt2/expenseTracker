@@ -17,7 +17,8 @@ const routes: Routes = [
   },
   {
     path: 'budget',
-    component: BudgetComponent
+    component: BudgetComponent,
+    canActivate: [AuthGuard]
   },
 ];
 @NgModule({

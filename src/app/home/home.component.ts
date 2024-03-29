@@ -33,9 +33,7 @@ import { AuthenticationService } from '../services/authentication.service';
 export class HomeComponent {
 
   constructor(public expenseService: ExpenseService, 
-              private authenticationService: AuthenticationService,
-              private modalCtrl: ModalController, 
-              private router: Router) {
+              private modalCtrl: ModalController) {
     // manually add the circle icon... cause for some reason this is needed
     addIcons({ addCircle })
     const date = new Date();
@@ -116,14 +114,5 @@ export class HomeComponent {
       this.expenseService.addExpense(data)
         .subscribe(() => this.updateExpenseList());
     }
-  }
-
-  logout(){
-    this.authenticationService.logout();
-    this.router.navigate(['/login'])
-  }
-
-  navigate(route: string){
-    this.router.navigate([route])
   }
 }

@@ -2,13 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Budget } from '../models/budget';
 import { ExpenseService } from '../services/expense.service';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonLabel, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonGrid, IonRow, IonCol  } from '@ionic/angular/standalone'
+import { 
+  IonContent, IonLabel, IonList, IonItem, 
+  IonInfiniteScroll, IonInfiniteScrollContent, IonTitle,
+  IonGrid, IonRow, IonCol, IonMenuButton, IonToolbar, IonButtons  } from '@ionic/angular/standalone'
 
 @Component({
   selector: 'app-budget',
   templateUrl: './budget.component.html',
   styleUrls: ['./budget.component.scss'],
-  imports: [CommonModule, IonContent, IonLabel, IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonGrid, IonRow, IonCol],
+  imports: [
+    CommonModule, IonContent, IonLabel, 
+    IonList, IonItem, IonInfiniteScroll, IonTitle,
+    IonInfiniteScrollContent, IonGrid, IonButtons,
+    IonRow, IonCol, IonMenuButton, IonToolbar],
   standalone: true
 })
 export class BudgetComponent  implements OnInit {
@@ -16,6 +23,7 @@ export class BudgetComponent  implements OnInit {
   public budget: Budget;
 
   public monthTitle: string;
+  public total: number = 0;
 
   public headers: string[] = ["Category", "Projected", "Actual", "remove"];
 
@@ -26,7 +34,11 @@ export class BudgetComponent  implements OnInit {
   }
 
   ngOnInit(): void {
-    this.expenseService.getBudget().subscribe(budget => this.budget = budget);
+    this.expenseService.getBudget()
+      .subscribe(budget => {
+        this.budget = budget;
+        this.budget.categoryLimits?.forEach((value) => this.total += value.actual);
+      });
   }
 
   public updateBudgetSettings() {
