@@ -25,23 +25,25 @@ export class BudgetComponent  implements OnInit {
 
   public budget: Budget;
 
-  public monthTitle: string;
-  public total: number = 0;
+  public monthTitle: string = '';
+  public totalProjected: number = 0;
+  public totalActual: number = 0;
 
   public headers: string[] = ["Category", "Projected", "Actual", "remove"];
 
   constructor(private expenseService: ExpenseService) {
     addIcons({ trash })
     this.budget = new Budget();
-    const today = new Date();
-    this.monthTitle = `TEST`
   }
 
   ngOnInit(): void {
     this.expenseService.getBudget()
       .subscribe(budget => {
         this.budget = budget;
-        this.budget.categoryLimits?.forEach((value) => this.total += value.actual);
+        this.budget.categoryLimits?.forEach((value) => {
+            this.totalActual += value.actual;
+            this.totalProjected += value.limit;
+          });
       });
   }
 
