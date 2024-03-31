@@ -56,7 +56,7 @@ export class BudgetComponent  implements OnInit {
 
   updateLimit(event: any, index: number){
     if(this.budget.categoryLimits && index < this.budget.categoryLimits.length){
-      this.budget.categoryLimits[index].limit = event.target.value;
+      this.budget.categoryLimits[index].limit = event.target.value.replace('$', '');
       this.updateBudgetSettings();
     }
   }
