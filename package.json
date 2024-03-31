@@ -1,6 +1,6 @@
 {
   "name": "plutus",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "author": "Luke Holt",
   "homepage": "https://gitlab.internal.oasis.com/",
   "scripts": {
