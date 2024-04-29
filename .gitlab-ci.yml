@@ -19,6 +19,9 @@ audit-modules:
 
 register-deploy-version:
   stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
+    - if: $FORCE_DEPLOY == "true"
   before_script:
     - !reference [ .install-node, before_script ]
     - apt install curl -y
