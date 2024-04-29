@@ -15,33 +15,35 @@ include:
 audit-modules:
   variables:
     AUDIT_LEVEL: critical
-
-
-register-deploy-version:
-  stage: deploy
   rules:
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
-    - if: $FORCE_DEPLOY == "true"
-  before_script:
-    - !reference [ .install-node, before_script ]
-    - apt install curl -y
-  script:
-    - echo "VERSION=$( npm pkg get version | tr -d '"')" >> release.env
-    - 'curl --request POST --header "PRIVATE-TOKEN: ${API_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/repository/tags?tag_name=${VERSION}&ref=master"'
-  artifacts:
-    reports:
-      dotenv: release.env
+    - if: $CI_PIPELINE_SOURCE == "push"
+
+
+# register-deploy-version:
+#   stage: deploy
+#   rules:
+#     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
+#     - if: $FORCE_DEPLOY == "true"
+#   before_script:
+#     - !reference [ .install-node, before_script ]
+#     - apt install curl -y
+#   script:
+#     - echo "VERSION=$( npm pkg get version | tr -d '"')" >> release.env
+#     - 'curl --request POST --header "PRIVATE-TOKEN: ${API_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/repository/tags?tag_name=${VERSION}&ref=master"'
+#   artifacts:
+#     reports:
+#       dotenv: release.env
 
 deploy:
   image: docker:24.0.5
   services:
     - docker:24.0.5-dind
   stage: deploy
-  needs: ["register-deploy-version"]
+  #needs: ["register-deploy-version"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
     - if: $FORCE_DEPLOY == "true"
   script:
-    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password-stdin
-    - docker build -f Dockerfile -t $CI_REGISTRY_IMAGE:VERSION .
-    - docker push $CI_REGISTRY_IMAGE:$VERSION
+   # - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password-stdin
+    - docker build -f Dockerfile -t $CI_REGISTRY_IMAGE:1.1.0 .
+    - docker push $CI_REGISTRY_IMAGE:1.1.0
