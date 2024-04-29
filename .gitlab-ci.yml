@@ -44,6 +44,7 @@ deploy:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
     - if: $FORCE_DEPLOY == "true"
   script:
+    - unset DOCKER_HOST
    # - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password-stdin
     - docker build -f Dockerfile -t $CI_REGISTRY_IMAGE:1.1.0 .
     - docker push $CI_REGISTRY_IMAGE:1.1.0
