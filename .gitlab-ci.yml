@@ -17,29 +17,31 @@ audit-modules:
     AUDIT_LEVEL: critical
 
 
-deploy:
+register-deploy-version:
   stage: deploy
   rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
     - if: $FORCE_DEPLOY == "true"
-  before_script: 
-    - apt install curl -y
+  before_script:
     - !reference [ .install-node, before_script ]
-    - !reference [.configure-ssh, before_script]
-    - npm install -g @ionic/cli
+    - apt install curl -y
   script:
-    - VERSION=$( npm pkg get version | tr -d '"')
+    - echo "VERSION=$( npm pkg get version | tr -d '"')" >> release.env
     - 'curl --request POST --header "PRIVATE-TOKEN: ${API_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/repository/tags?tag_name=${VERSION}&ref=master"'
-    - ionic build --prod
-    - scp -r $CI_PROJECT_DIR/www ${PROD_USER}@${PROD_SERVER}:~
-    - scp install.sh ${PROD_USER}@${PROD_SERVER}:~
-    - ssh ${PROD_USER}@${PROD_SERVER} "bash install.sh"
   artifacts:
-    paths:
-      - plutus/
-    name: "ExpenseUI"
-    when: on_success
-  environment:
-    name: production
-    url: https://expenseapp.com
+    reports:
+      dotenv: release.env
 
+deploy:
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  stage: deploy
+  needs: ["register-deploy-version"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
+    - if: $FORCE_DEPLOY == "true"
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password-stdin
+    - docker build -f Dockerfile -t $CI_REGISTRY_IMAGE:$VERSION .
+    - docker push $CI_REGISTRY_IMAGE:$VERSION
