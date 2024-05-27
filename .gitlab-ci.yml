@@ -27,7 +27,7 @@ register-deploy-version:
     - apt install curl -y
   script:
     - VERSION=$( npm pkg get version | tr -d '"')
-    - echo "$VERSION" >> release.env
+    - echo "VERSION=$VERSION" >> release.env
     - 'curl --request POST --header "PRIVATE-TOKEN: ${API_TOKEN}" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/repository/tags?tag_name=${VERSION}&ref=master"'
   artifacts:
     reports:
