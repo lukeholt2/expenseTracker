@@ -39,11 +39,17 @@ export class BudgetComponent  implements OnInit {
   ngOnInit(): void {
     this.expenseService.getBudget()
       .subscribe(budget => {
-        this.budget = budget;
-        this.budget.categoryLimits?.forEach((value) => {
-            this.totalActual += value.actual;
-            this.totalProjected += value.limit;
-          });
+        this.updatebudget(budget)
+      });
+  }
+
+  updatebudget(budget: Budget){
+    this.budget = budget;
+    this.totalActual = 0;
+    this.totalProjected = 0;
+    this.budget.categoryLimits?.forEach((value) => {
+        this.totalActual += value.actual;
+        this.totalProjected += value.limit;
       });
   }
 
@@ -63,7 +69,7 @@ export class BudgetComponent  implements OnInit {
 
   public updateBudgetSettings() {
     this.expenseService.updateBudget(this.budget)
-      .subscribe((budget: Budget) => this.budget = budget);
+      .subscribe((budget: Budget) => this.updatebudget(budget));
   }
 
 

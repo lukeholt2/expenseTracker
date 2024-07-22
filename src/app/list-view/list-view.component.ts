@@ -39,7 +39,11 @@ export class ListViewComponent  implements OnInit {
 
     const { data, role } = await modal.onWillDismiss();
     if (role == 'confirm') {
-      this.expenseService.addExpense(data).subscribe((data) => console.log(data));
+      console.log(data);
+      this.expenseService.editExpense(data)
+        .subscribe((data) => {
+            this.updateList.subscribe((data) => this.list = data);
+        });
     }
   }
 }
