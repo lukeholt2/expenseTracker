@@ -1,3 +1,9 @@
+## 1.1.2 (2024-08-04)
+
+### changed (1 change)
+
+- [1.1.2](gitlab-instance-8c9d9f19/plutus@cefa7f13536eb0df1e8cb932f4b1fac13aeebbff) ([merge request](gitlab-instance-8c9d9f19/plutus!14))
+
 ## 1.1.1 (2024-05-27)
 
 ### fixed (1 change)
