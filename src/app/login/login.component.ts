@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup<LoginForm>;
   loading = false;
   submitted = false;
-  returnUrl: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,9 +46,6 @@ export class LoginComponent implements OnInit {
       username: new FormControl<any>('', Validators.required),
       password: new FormControl<any>('', Validators.required)
     });
-
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   // convenience getter for easy access to form fields
@@ -74,7 +70,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['../passwordChange'], { relativeTo: this.route });
           }
           else {
-            this.router.navigate([this.returnUrl]);
+            this.router.navigate(['/']);
           }
         },
         (error: any) => {

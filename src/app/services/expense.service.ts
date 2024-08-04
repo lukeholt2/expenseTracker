@@ -37,7 +37,9 @@ export class ExpenseService {
   }
 
   public editExpense(expense: Expense) {
-    return this.http.put(this.baseEndpoint, expense);
+    const formData = new FormData();
+    formData.append('expense', JSON.stringify(expense));
+    return this.http.put(this.baseEndpoint, formData);
   }
 
   public delete(expense: Expense) {
