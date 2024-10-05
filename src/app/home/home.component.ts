@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ExpenseService } from '../services/expense.service';
 import { Expense } from '../models/expense';
 import { ModalController } from '@ionic/angular';
@@ -28,7 +28,7 @@ import { Filter } from '../models/filter';
   ],
   standalone: true
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
   constructor(public expenseService: ExpenseService, 
               private modalCtrl: ModalController) {
@@ -53,6 +53,10 @@ export class HomeComponent {
   expenses$: Observable<Expense[]> = this.#expenses.asObservable();
 
   expenseFilter: Filter;
+
+  ngOnInit(): void {
+      this.updateExpenseList();
+  }
 
   private updateExpenseList() {
     this.expenseService
@@ -104,16 +108,24 @@ export class HomeComponent {
     this.updateExpenseList();
   }
 
-  async onAdd() {
+  async onAddOrEdit(expense?: Expense) {
     const modal = await this.modalCtrl.create({
       component: NewExpenseDialogComponent,
+      componentProps: {
+        expense: expense
+      }
     });
+
+    const callback = (data: any) => expense 
+      ? this.expenseService.editExpense(data) 
+      : this.expenseService.addExpense(data);
+
     modal.present();
 
     const { data, role } = await modal.onWillDismiss();
     if (role == 'confirm') {
-      this.expenseService.addExpense(data)
-        .subscribe(() => this.updateExpenseList());
+      callback(data).subscribe(() => this.updateExpenseList());
     }
   }
+
 }

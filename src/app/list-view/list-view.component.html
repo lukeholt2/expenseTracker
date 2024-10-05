@@ -1,4 +1,5 @@
 <ion-content>
+  <cdk-virtual-scroll-viewport itemSize="50">
   <ion-list>
     <ion-grid>
       <ion-row>
@@ -19,7 +20,7 @@
         </ion-col>
       </ion-row>
       </ion-grid>
-        <ion-item *ngFor="let expense of list" button (click)="onView(expense)">
+        <ion-item *cdkVirtualFor="let expense of list" button (click)="onView(expense)">
           <ion-label>{{expense.date.toLocaleDateString()}}</ion-label>
           <ion-label>${{expense.amount}}</ion-label>
           <ion-label>{{expense.item}}</ion-label>
@@ -27,7 +28,5 @@
           <ion-label>{{expense.category}}</ion-label>
         </ion-item>
       </ion-list>
-  <ion-infinite-scroll>
-    <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+    </cdk-virtual-scroll-viewport>
 </ion-content>
