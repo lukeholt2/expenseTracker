@@ -9,7 +9,7 @@
   </ion-toolbar>
 
   <ion-fab slot="fixed" horizontal="end" vertical="top">
-    <ion-fab-button size="small" (click)="onAdd()">
+    <ion-fab-button size="small" (click)="onAddOrEdit()">
       <ion-icon name="add-circle"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -31,5 +31,5 @@
       </ion-grid>
     </ion-item>
   </ion-list>
-  <app-list-view [updateList]="expenses$"></app-list-view>
+  <app-list-view [list]="expenses$" (onItemSelected)="onAddOrEdit($event)"></app-list-view>
 </ion-content>
