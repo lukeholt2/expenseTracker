@@ -1,5 +1,5 @@
 <ion-content>
-  <cdk-virtual-scroll-viewport itemSize="50">
+  <cdk-virtual-scroll-viewport class="listView" itemSize="100" minBufferPx="900" maxBufferPx="1350">
   <ion-list>
     <ion-grid>
       <ion-row>
@@ -21,7 +21,7 @@
       </ion-row>
       </ion-grid>
       <div *ngIf="(list | async)?.length !== 0; else emptyList">
-        <ion-item  *cdkVirtualFor="let expense of list" button (click)="onView(expense)">
+        <ion-item  *cdkVirtualFor="let expense of list" button (click)="onView(expense)" style="font-size: small;">
           <ion-label>{{expense.date.toLocaleDateString()}}</ion-label>
           <ion-label>${{expense.amount}}</ion-label>
           <ion-label>{{expense.item}}</ion-label>
