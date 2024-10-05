@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../services/authentication.service';
-import { IonContent, IonInput, IonButton } from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonButton, ToastController } from '@ionic/angular/standalone';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private toastController: ToastController,
     private authenticationService: AuthenticationService
   ) {
     this.loginForm = this.formBuilder.group<LoginForm>({
@@ -50,6 +51,16 @@ export class LoginComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get f() { return this.loginForm?.controls; }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000,
+      position: 'bottom',
+    });
+
+    await toast.present();
+  }
 
   onSubmit() {
     this.submitted = true;
@@ -73,8 +84,9 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/']);
           }
         },
-        (error: any) => {
+        async (error: any) => {
           this.loading = false;
+          this.presentToast(error.message ?? error);
         });
   }
 }
