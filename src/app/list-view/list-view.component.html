@@ -20,13 +20,21 @@
         </ion-col>
       </ion-row>
       </ion-grid>
-        <ion-item *cdkVirtualFor="let expense of list" button (click)="onView(expense)">
+      <div *ngIf="(list | async)?.length !== 0; else emptyList">
+        <ion-item  *cdkVirtualFor="let expense of list" button (click)="onView(expense)">
           <ion-label>{{expense.date.toLocaleDateString()}}</ion-label>
           <ion-label>${{expense.amount}}</ion-label>
           <ion-label>{{expense.item}}</ion-label>
           <ion-label>{{expense.location}}</ion-label>
           <ion-label>{{expense.category}}</ion-label>
         </ion-item>
+      </div>
       </ion-list>
     </cdk-virtual-scroll-viewport>
 </ion-content>
+
+<ng-template #emptyList>
+  <ion-item >
+    <span>No results found.</span>
+  </ion-item>
+</ng-template>
