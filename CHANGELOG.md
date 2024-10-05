@@ -1,3 +1,14 @@
+## 1.2.0 (2024-10-05)
+
+### changed (1 change)
+
+- [Indicate when table results are empty](gitlab-instance-8c9d9f19/plutus@bd2e34f2a18e2a02b8609b3349d067859cf287ba) ([merge request](gitlab-instance-8c9d9f19/plutus!18))
+
+### added (2 changes)
+
+- [Displays toast notifications on login failure](gitlab-instance-8c9d9f19/plutus@3fed6754bb0600b0d1e94eeea641cfa08140e7e2) ([merge request](gitlab-instance-8c9d9f19/plutus!17))
+- [Introduces proper virtual scrolling](gitlab-instance-8c9d9f19/plutus@c437515969484daaef0e6c140696ca4e8d1c8640) ([merge request](gitlab-instance-8c9d9f19/plutus!15))
+
 ## 1.1.2 (2024-08-04)
 
 ### changed (1 change)
