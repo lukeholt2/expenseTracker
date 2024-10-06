@@ -1,3 +1,9 @@
+## 1.2.1 (2024-10-05)
+
+### fixed (1 change)
+
+- [Fixed table list styling to use full height](gitlab-instance-8c9d9f19/plutus@0740ea6def0d4c87e1bed16ab728e7df450be04a) ([merge request](gitlab-instance-8c9d9f19/plutus!19))
+
 ## 1.2.0 (2024-10-05)
 
 ### changed (1 change)
