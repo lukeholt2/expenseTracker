@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output , ViewChild} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Expense } from '../models/expense';
+import { IonAutocompleteComponent } from '../_components/ion-autocomplete/ion-autocomplete.component';
 import { ExpenseService } from '../services/expense.service';
-import { map, startWith } from 'rxjs/operators';
 import { ModalController } from '@ionic/angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,7 +25,7 @@ interface IExpenseForm{
   selector: 'app-new-expense-dialog',
   templateUrl: './new-expense-dialog.component.html',
   styleUrls: ['./new-expense-dialog.component.scss'],
-  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, IonList, IonItem, IonContent, IonButton, IonTitle, IonButtons, IonHeader, IonToolbar, IonInput, IonLabel, IonSelect, IonSelectOption],
+  imports: [CommonModule, IonAutocompleteComponent, MatFormFieldModule, ReactiveFormsModule, IonList, IonItem, IonContent, IonButton, IonTitle, IonButtons, IonHeader, IonToolbar, IonInput, IonLabel, IonSelect, IonSelectOption],
   standalone: true
 })
 export class NewExpenseDialogComponent implements OnInit {
@@ -34,9 +34,6 @@ export class NewExpenseDialogComponent implements OnInit {
 
   public title: string = 'Add';
 
-  focusCategory = false;
-
-  filteredCategories?: Observable<string[]>;
   public availableCategories: string[] = [];
 
   /** Form group containing the new expense values */
@@ -51,20 +48,11 @@ export class NewExpenseDialogComponent implements OnInit {
     private expenseService: ExpenseService) {
   }
 
-  toggleFocus(){
-    this.focusCategory = !this.focusCategory;
-  }
-
   ngOnInit(): void {
     if(this.expense){
       this.title = 'Edit'
     }
     this.setExpense(this.expense);
-    this.filteredCategories = this.form?.controls['category'].valueChanges
-      .pipe(
-        startWith(''),
-        map(state => state ? this.filterCategories(state) : this.availableCategories.slice())
-      );
     this.expenseService.getCategories().subscribe((cats) => this.availableCategories = cats)
     this.expenseService.getPaymentTypes().subscribe({
       next: (types: string[]) => {
@@ -116,14 +104,7 @@ export class NewExpenseDialogComponent implements OnInit {
     this.#receipt = event.target.files[0];
   }
 
-  public UpdateCategory(cat: string) {
+  public UpdateCategory(cat: any) {
     this.form?.patchValue({ 'category': cat });
-    if (this.focusCategory) {
-      this.toggleFocus();
-    }
-  }
-
-  filterCategories(name: string) {
-    return this.availableCategories?.filter(category => category.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 }

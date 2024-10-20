@@ -34,19 +34,7 @@
             </ion-select-option>
           </ion-select>
         </div>
-        <div>
-          <ion-label>Category</ion-label>
-          <ion-input type="text" formControlName="category"
-            autocapitalize
-            (ionFocus)="toggleFocus()"
-		        >
-          </ion-input>
-          <ion-list *ngIf="focusCategory">
-            <ion-item *ngFor="let cat of filteredCategories | async" button (click)="UpdateCategory(cat)">
-              {{cat}}
-            </ion-item>
-          </ion-list>
-        </div>
+        <app-ion-autocomplete [value]="f.category.value" [label]="'Category'" (onItemSelected)="UpdateCategory($event)" [list]="availableCategories"></app-ion-autocomplete>
         <div>
           <label>Receipt (Optional): </label>
           <ion-input type="file" class="file-upload" accept="image/png, .jpeg, .jpg"

@@ -1,0 +1,13 @@
+<div>
+  <ion-label>{{label}}</ion-label>
+  <ion-input type="text"
+    autocapitalize
+    value="{{value}}"
+    (ionFocus)="toggleFocus()">
+  </ion-input>
+  <ion-list *ngIf="focused">
+    <ion-item *ngFor="let val of filteredValues" button (click)="onSelect(val)">
+      {{val}}
+    </ion-item>
+  </ion-list>
+</div>

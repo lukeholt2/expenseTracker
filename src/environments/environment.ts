@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,   
-  apiURL: 'https://expenseapp.com/expenseapi'
+  apiURL: 'http://localhost:8080'
 };
 
 /*
