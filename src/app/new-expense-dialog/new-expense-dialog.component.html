@@ -28,7 +28,7 @@
         </div>
         <div>
           <ion-label>Payment Type: </ion-label>
-          <ion-select formControlName="paymentType">
+          <ion-select interface="popover" formControlName="paymentType">
             <ion-select-option *ngFor="let type of paymentTypes | async" [value]="type">
               {{type}}
             </ion-select-option>
@@ -36,14 +36,22 @@
         </div>
         <div>
           <ion-label>Category</ion-label>
-          <ion-input type="text" formControlName="category"/>
+          <ion-input type="text" formControlName="category"
+            autocapitalize
+            (ionFocus)="toggleFocus()"
+		        >
+          </ion-input>
+          <ion-list *ngIf="focusCategory">
+            <ion-item *ngFor="let cat of filteredCategories | async" button (click)="UpdateCategory(cat)">
+              {{cat}}
+            </ion-item>
+          </ion-list>
         </div>
         <div>
           <label>Receipt (Optional): </label>
           <ion-input type="file" class="file-upload" accept="image/png, .jpeg, .jpg"
             (change)="addReceipt($event)"/>
         </div>
-                 
       </form>
     </ion-content>
 </ion-content>
