@@ -17,8 +17,8 @@ import { CommonModule } from '@angular/common';
 })
 export class IonAutocompleteComponent implements OnInit {
 
-  @Input() list?: string[] = [];// Observable<string[]>;
-
+  @Input() list?: string[] = [];
+  
   @Input() label: string = '';
 
   @Input() value: string = ''
