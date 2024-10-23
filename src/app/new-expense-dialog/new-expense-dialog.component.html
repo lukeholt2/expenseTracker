@@ -28,22 +28,18 @@
         </div>
         <div>
           <ion-label>Payment Type: </ion-label>
-          <ion-select formControlName="paymentType">
+          <ion-select interface="popover" formControlName="paymentType">
             <ion-select-option *ngFor="let type of paymentTypes | async" [value]="type">
               {{type}}
             </ion-select-option>
           </ion-select>
         </div>
-        <div>
-          <ion-label>Category</ion-label>
-          <ion-input type="text" formControlName="category"/>
-        </div>
+        <app-ion-autocomplete [value]="f.category.value" [label]="'Category'" (onItemSelected)="UpdateCategory($event)" [list]="availableCategories"></app-ion-autocomplete>
         <div>
           <label>Receipt (Optional): </label>
           <ion-input type="file" class="file-upload" accept="image/png, .jpeg, .jpg"
             (change)="addReceipt($event)"/>
         </div>
-                 
       </form>
     </ion-content>
 </ion-content>
