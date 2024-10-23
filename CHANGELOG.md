@@ -1,3 +1,9 @@
+## 1.3.0 (2024-10-22)
+
+### added (1 change)
+
+- [Introduces a generic, reusable autocomplete component](gitlab-instance-8c9d9f19/plutus@3528f5b393de12d028f75ac6a6ff27dc109f5949) ([merge request](gitlab-instance-8c9d9f19/plutus!20))
+
 ## 1.2.1 (2024-10-05)
 
 ### fixed (1 change)
