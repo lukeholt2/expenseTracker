@@ -3,10 +3,14 @@
   <ion-input type="text"
     autocapitalize
     value="{{value}}"
+    debounce="100"
+    (ionInput)="onChange($event)"
     (ionFocus)="toggleFocus()">
   </ion-input>
   <ion-list *ngIf="focused">
-    <ion-item *ngFor="let val of filteredValues" button (click)="onSelect(val)">
+    <ion-item *ngFor="let val of filteredValues" 
+      button 
+      (click)="onSelect(val)">
       {{val}}
     </ion-item>
   </ion-list>
