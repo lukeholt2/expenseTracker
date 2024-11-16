@@ -37,14 +37,21 @@ export class IonAutocompleteComponent implements OnInit {
     this.focused = !this.focused;
   }
 
+  onChange(event: any){
+    this.value = event.target.value;
+    this.onItemSelected.emit(this.value)
+  }
+
   onSelect(val: string) {
     this.value = val;
     this.onItemSelected.emit(val);
-    this.toggleFocus();
+    this.focused = false;
   }
 
   get filteredValues() {
-    return this.list?.filter(val => val.toLowerCase().indexOf(this.value.toLowerCase()) === 0);
+    return this.value?.length > 0  
+      ? this.list?.filter(val => val.toLowerCase().indexOf(this.value?.toLowerCase()) === 0) 
+      : this.list;
   }
 
 }

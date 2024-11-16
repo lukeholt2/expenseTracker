@@ -24,6 +24,9 @@
         <ion-col>
           <ion-label>Actual</ion-label>
         </ion-col>
+        <ion-col>
+          <ion-label>Diff</ion-label>
+        </ion-col>
       </ion-row>
     </ion-grid>
     <ion-item-sliding *ngFor="let limit of budget.categoryLimits; let i = index;">
@@ -31,6 +34,9 @@
         <ion-input type="text" value="{{ limit.category }}" (change)="updateCategory($event, i)"></ion-input>
         <ion-input value="{{limit.limit | currency}}" (change)="updateLimit($event, i)"></ion-input>
         <ion-input readonly value="{{limit.actual | currency}}"></ion-input>
+        <ion-input [ngStyle]="{ 'background' : (limit.limit - limit.actual > 0) ? 'green' : 'red'}" 
+            readonly value="{{limit.actual | currency}}">
+        </ion-input>
       </ion-item>
       <ion-item-options>
         <ion-item-option color="danger" (click)="removeCategory(limit.category)">
