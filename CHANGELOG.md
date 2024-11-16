@@ -1,3 +1,13 @@
+## 1.3.1 (2024-11-16)
+
+### fixed (1 change)
+
+- [Fixes directly editing autocomplete values, ensuring changes are properly emitted.](gitlab-instance-8c9d9f19/plutus@774a12959b40e9f3304b5a129bb54151b5e81332) ([merge request](gitlab-instance-8c9d9f19/plutus!22))
+
+### added (1 change)
+
+- [Introduces a new budget column to display category diffs](gitlab-instance-8c9d9f19/plutus@f5531c5e239a1e0bc0e0800e743e4dbe07f80826) ([merge request](gitlab-instance-8c9d9f19/plutus!21))
+
 ## 1.3.0 (2024-10-22)
 
 ### added (1 change)
