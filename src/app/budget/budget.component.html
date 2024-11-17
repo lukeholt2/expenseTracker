@@ -34,7 +34,7 @@
         <ion-input type="text" value="{{ limit.category }}" (change)="updateCategory($event, i)"></ion-input>
         <ion-input value="{{limit.limit | currency}}" (change)="updateLimit($event, i)"></ion-input>
         <ion-input readonly value="{{limit.actual | currency}}"></ion-input>
-        <ion-input [ngStyle]="{ 'background' : (limit.limit - limit.actual > 0) ? 'green' : 'red'}" 
+        <ion-input [ngStyle]="{ 'background' : (limit.limit - limit.actual >= 0) ? 'green' : 'red'}" 
             readonly value="{{limit.actual | currency}}">
         </ion-input>
       </ion-item>
