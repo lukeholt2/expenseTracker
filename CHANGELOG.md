@@ -1,3 +1,9 @@
+## 1.3.2 (2024-11-29)
+
+### changed (1 change)
+
+- [Refactors the layout to use tabs in place of a dedicated menu](gitlab-instance-8c9d9f19/plutus@a78309f478e7f7455cabc7dc165e2663501ddf9d) ([merge request](gitlab-instance-8c9d9f19/plutus!24))
+
 ## 1.3.1 (2024-11-16)
 
 ### fixed (1 change)
