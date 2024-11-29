@@ -1,24 +1,19 @@
-<ion-menu content-id="main-content">
-  <ion-content class="ion-padding">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Plutus Menu</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-list>
-      <ion-item button (click)="navigate('/')">
-        <ion-label>Home</ion-label>
-      </ion-item>
-      <ion-item button (click)="navigate('budget')">
-        <ion-label>Budget</ion-label>
-      </ion-item>
-      <ion-item button (click)="logout()">
-        <ion-label>Sign Out</ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</ion-menu>
-
-<ion-app >
+<ion-app>
   <ion-router-outlet id="main-content"></ion-router-outlet>
+  <ion-tabs *ngIf="authenticationService.currentUserValue">
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button (click)="navigate('')">
+        <ion-icon name="wallet-outline"></ion-icon>
+        budget
+      </ion-tab-button>
+      <ion-tab-button (click)="navigate('transactions')">
+        <ion-icon name="cash-outline"></ion-icon>
+        transactions
+      </ion-tab-button>
+      <ion-tab-button (click)="[navigate('login'), logout()]">
+        <ion-icon name="log-out-outline"></ion-icon>
+        logout
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
 </ion-app>
