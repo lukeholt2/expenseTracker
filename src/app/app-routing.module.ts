@@ -7,17 +7,17 @@ import { BudgetComponent } from './budget/budget.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: HomeComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'login',
     component: LoginComponent
   },
   {
-    path: 'budget',
+    path: '',
     component: BudgetComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'transactions',
+    component: HomeComponent,
     canActivate: [AuthGuard]
   },
 ];

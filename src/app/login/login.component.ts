@@ -73,20 +73,15 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.f?.username.value ?? '', this.f?.password.value ?? '')
       .pipe(first())
-      .subscribe(
-        (data: any) => {
+      .subscribe({
+        next: (data: any) => {
           this.loginForm.reset();
           this.loading = false;
-          if (data.passwordChangeRequired) {
-            this.router.navigate(['../passwordChange'], { relativeTo: this.route });
-          }
-          else {
-            this.router.navigate(['/']);
-          }
+          this.router.navigate(['/']);
         },
-        async (error: any) => {
+        error:async (error: any) => {
           this.loading = false;
           this.presentToast(error.message ?? error);
-        });
+      }});
   }
 }

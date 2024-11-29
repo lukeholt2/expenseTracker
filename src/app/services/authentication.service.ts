@@ -27,7 +27,7 @@ export class AuthenticationService {
   }
 
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient) {
     const cachedData: any = this.localStorage;
     if(cachedData){
       const id: number =  cachedData.id;
@@ -64,7 +64,6 @@ export class AuthenticationService {
     // remove user from local storage and set current user to null
     localStorage.removeItem('currentUser');
     this.#currentUserSubject.next(null);
-    this.router.navigate(['/login']);
   }
 
   public register(user: any) {
