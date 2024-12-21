@@ -20,9 +20,9 @@
         </ion-col>
       </ion-row>
       </ion-grid>
-      <div *ngIf="(list | async)?.length !== 0; else emptyList">
-        <ion-item  *cdkVirtualFor="let expense of list" button (click)="onView(expense)" style="font-size: small;">
-          <ion-label>{{expense.date.toLocaleDateString()}}</ion-label>
+      <div *ngIf="(list | async)?.length !== 0; else emptyList" class="item">
+        <ion-item  *cdkVirtualFor="let expense of list" button (click)="onView(expense)">
+          <ion-label>{{expense.date.toLocaleDateString(undefined, { month: 'numeric', day: 'numeric', year: '2-digit'})}}</ion-label>
           <ion-label>${{expense.amount}}</ion-label>
           <ion-label>{{expense.item}}</ion-label>
           <ion-label>{{expense.location}}</ion-label>

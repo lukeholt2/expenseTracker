@@ -13,7 +13,6 @@
 
 
   <ion-list>
-    <ion-reorder-group [disabled]="false" >
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -37,7 +36,6 @@
         <ion-input readonly value="{{limit.actual | currency}}"></ion-input>
         <ion-input readonly value="{{limit.limit - limit.actual | currency}}">
         </ion-input>
-        <ion-reorder slot="end"></ion-reorder>
       </ion-item>
        
       <ion-item-options>
@@ -47,7 +45,6 @@
       </ion-item-options>
       <ion-progress-bar style="height: 0.5rem;" color="{{limit.limit - limit.actual >= 0 ? 'success' : 'danger'}}" value="{{limit.actual / limit.limit < 1 ? limit.actual / limit.limit : 100}}"></ion-progress-bar>
     </ion-item-sliding>
-  </ion-reorder-group>
   </ion-list>
   <ion-button expand="full" shape="round" (click)="addCategory()">Add Category</ion-button>
 </ion-content>

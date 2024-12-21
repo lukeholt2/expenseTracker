@@ -21,6 +21,6 @@ export class ListViewComponent {
   @Output() onItemSelected: EventEmitter<Expense> = new EventEmitter<Expense>();
 
   onView(expense: Expense) {
-     this.onItemSelected.emit(expense)
+     this.onItemSelected.emit(expense);
   }
 }
