@@ -6,8 +6,7 @@ import { addIcons } from 'ionicons';
 import { trash } from 'ionicons/icons';
 import { 
   IonContent, IonLabel, IonList, IonItem, IonIcon,
-  IonInfiniteScroll, IonInfiniteScrollContent, IonTitle, IonItemSliding, IonItemOption, IonItemOptions,
-  IonReorder, IonReorderGroup, IonProgressBar,
+  IonInfiniteScroll, IonInfiniteScrollContent, IonTitle, IonItemSliding, IonItemOption, IonItemOptions, IonProgressBar,
   IonGrid, IonRow, IonCol, IonMenuButton, IonToolbar, IonButtons, IonButton, IonInput  } from '@ionic/angular/standalone'
 
 @Component({
@@ -16,8 +15,7 @@ import {
   styleUrls: ['./budget.component.scss'],
   imports: [
     CommonModule, IonContent, IonLabel, IonButton, IonIcon,
-    IonList, IonItem, IonInfiniteScroll, IonTitle, IonInput,
-    IonReorder, IonReorderGroup, IonProgressBar,
+    IonList, IonItem, IonInfiniteScroll, IonTitle, IonInput, IonProgressBar,
     IonInfiniteScrollContent, IonGrid, IonButtons,
     IonItemSliding, IonItemOption, IonItemOptions,
     IonRow, IonCol, IonMenuButton, IonToolbar],
