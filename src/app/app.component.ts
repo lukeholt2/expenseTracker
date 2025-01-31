@@ -8,6 +8,7 @@ import { IonApp, IonRouterOutlet,
 import { AuthenticationService } from './services/authentication.service';
 import { addIcons } from 'ionicons';
 import { walletOutline, logOutOutline, cashOutline } from 'ionicons/icons';
+import { CheckForUpdateService } from './services/check-for-update.service';
 
 
 @Component({
@@ -21,12 +22,14 @@ import { walletOutline, logOutOutline, cashOutline } from 'ionicons/icons';
 })
 export class AppComponent {
   constructor(public authenticationService: AuthenticationService,
-              private router: Router) {
+              private router: Router,
+              private _: CheckForUpdateService) {
                 addIcons({ walletOutline, logOutOutline, cashOutline });
               }
 
   logout(){
     this.authenticationService.logout();
+    document.location.reload();
   }
 
   navigate(route: string){
