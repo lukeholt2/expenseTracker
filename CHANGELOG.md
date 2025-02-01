@@ -1,3 +1,9 @@
+## 1.3.3 (2025-02-01)
+
+### fixed (1 change)
+
+- [Logging out now properly refreshes the page](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/69f53046ebf57e4e9be7e2eea6fd5b7459606566) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/27))
+
 ## 1.3.2 (2024-11-29)
 
 ### changed (1 change)
