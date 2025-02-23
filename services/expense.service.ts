@@ -1,10 +1,8 @@
 import { Expense } from '../models/expense';
 import { Budget } from '../models/budget';
-import axios from 'axios';
-import { Lifecycle, scoped } from 'tsyringe';
 //import { BehaviorSubject, Observable } from 'rxjs';
 
-@scoped(Lifecycle.ContainerScoped)
+
 export class ExpenseService {
 
   private get baseEndpoint(){

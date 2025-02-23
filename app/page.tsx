@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import { ExpenseTable } from '@/components/expenseTable';
 import { useSession } from "next-auth/react";
 import { HomeContext, IHomeContext } from "./homeContext";
@@ -7,7 +7,6 @@ import Navigation from "@/components/navigation";
 import Transactions from "@/components/transactions";
 import { getBudget, updateBudget } from './actions';
 import { Budget } from '@/models/budget';
-
 
 export default function Home() {
 
@@ -24,10 +23,18 @@ export default function Home() {
      updateBudget();
   }, [])
 
+  const budgetCategories = useMemo(() => budget.mapCategories(), [budget])
+
   const onAddBudget = useCallback(async () => {
     budget.categoryLimits.push({ category: `Category${budget.categoryLimits?.length ?? 0}`, limit: 0, actual: 0 });
-    const newVal = await updateBudget(JSON.stringify(budget));
-    setBudget(Object.assign(budget, newVal));
+    setBudget(Object.assign(new Budget(), budget));
+    const _ = await updateBudget(JSON.stringify(budget));
+  }, [budget, setBudget, updateBudget])
+
+  const onEditCategory = useCallback(async (cat: any) => {
+    budget.categoryLimits[+cat.key] = { category: cat.category, budgeted: cat.limit, spent: cat.actual }
+    setBudget(Object.assign(new Budget(), budget));
+    const _ = await updateBudget(JSON.stringify(budget));
   }, [budget, setBudget, updateBudget])
 
   const budgetHeaders = [
@@ -42,7 +49,12 @@ export default function Home() {
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
       {
         {
-          budget: <ExpenseTable headers={budgetHeaders} data={budget.mapCategories()} onAdd={onAddBudget}></ExpenseTable>,
+          budget: (<ExpenseTable 
+              headers={budgetHeaders} 
+              data={budgetCategories} 
+              editableColumns={['Category', 'Budgeted']}
+              onEdit={onEditCategory}
+              onAdd={onAddBudget}></ExpenseTable>),
           transactions: <Transactions></Transactions>
         }[state.state]
       }

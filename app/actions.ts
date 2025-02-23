@@ -57,4 +57,25 @@ export async function getCategories(monthOfInterest?: number, yearOfInterest?: n
   return await res.json();
 }
 
+export async function getExpenses(monthOfInterest?: number, yearOfInterest?: number, category?: string)  {
+    let endpoint = `${baseEndpoint()}`;
+    const cookieStore = await cookies();
+    if (monthOfInterest !== undefined) {
+      endpoint = `${endpoint}?monthOfInterest=${monthOfInterest}`;
+    }
+    if (yearOfInterest !== undefined) {
+      endpoint = `${endpoint}?yearOfInterest=${yearOfInterest}`;
+    }
+    if (category !== undefined) {
+      endpoint = `${endpoint}?category=${category}`;
+    }
+    const res = await fetch(endpoint, {
+      headers: {
+        'Content-type': 'application/json',
+        "Authorization": `Bearer ${cookieStore.get('token')?.value}` 
+      },
+    });
+    return await res.json();
+}
+
   

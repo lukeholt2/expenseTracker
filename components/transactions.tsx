@@ -1,9 +1,18 @@
 'use client'
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ExpenseTable } from '@/components/expenseTable';
+import { getExpenses } from "@/app/actions";
 
 export default function Transactions() {
-  const [value, setValue] = useState(0);
+  const [expenses, setExpenses] = useState([]);
+
+  useEffect(() => {
+    const loadExpenses = async () => {
+      const expenses = await getExpenses();
+      setExpenses(expenses);
+    }
+    loadExpenses();
+  }, [])
 
   const tableRows = [
     { key: '1', label: 'Date' },
@@ -17,7 +26,7 @@ export default function Transactions() {
 
   return (
     <>
-      <ExpenseTable headers={tableRows} data={[]} onAdd={onAdd}></ExpenseTable>
+      <ExpenseTable headers={tableRows} data={expenses} onAdd={onAdd}></ExpenseTable>
     </>
   );
 }

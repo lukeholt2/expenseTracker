@@ -4,22 +4,20 @@ import {
   NavbarContent,
   NavbarItem,
 } from "@heroui/navbar";
-import { Kbd } from "@heroui/kbd";
-import { Input } from "@heroui/input";
 
-import {
-  SearchIcon,
-} from "@/components/icons";
 import { Avatar } from "@heroui/react";
+import { useSession } from "next-auth/react";
 
 export const Navbar = () => {
+
+  const { data } = useSession({ required: true })
 
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="end">
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
             <NavbarItem>
-              <Avatar name='test'></Avatar>
+              <Avatar name={data?.user?.name ?? 'user'}></Avatar>
             </NavbarItem>
         </ul>
       </NavbarContent>
