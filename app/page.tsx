@@ -1,38 +1,49 @@
-'use client'
-import { useEffect, useReducer, useState } from "react";
+'use client';
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { ExpenseTable } from '@/components/expenseTable';
-import { Expense } from "@/models/expense";
-import { Budget } from "@/models/budget";
 import { useSession } from "next-auth/react";
 import { HomeContext, IHomeContext } from "./homeContext";
 import Navigation from "@/components/navigation";
 import Transactions from "@/components/transactions";
+import { getBudget, updateBudget } from './actions';
+import { Budget } from '@/models/budget';
+
 
 export default function Home() {
 
   const { update, data, status } = useSession({ required: true })
 
   const [state, dispatch] = useReducer(homeReducer, { state: 'budget' });
-  const [expenses, setExpenses] = useState<Expense[]>([])
-  const [budget, setBudget] = useState<Budget>(new Budget())
-
-  const budgetRows = [
-    { key: '1', label: 'Category' },
-    { key: '2', label: 'Budgeted' },
-    { key: '3', label: 'Spent' },
-    { key: '4', label: 'Available' }
-  ]
+  const [budget, setBudget] = useState(new Budget())
 
   useEffect(() => {
-    // fetech data
-  }, [data, status, update])
+     const updateBudget = async () => {
+      const value = await getBudget();
+      setBudget(Object.assign(new Budget(), value));
+     }
+     updateBudget();
+  }, [])
+
+  const onAddBudget = useCallback(async () => {
+    budget.categoryLimits.push({ category: `Category${budget.categoryLimits?.length ?? 0}`, limit: 0, actual: 0 });
+    const newVal = await updateBudget(JSON.stringify(budget));
+    setBudget(Object.assign(budget, newVal));
+  }, [budget, setBudget, updateBudget])
+
+  const budgetHeaders = [
+    { key: 'Category', label: 'Category' },
+    { key: 'Budgeted', label: 'Budgeted' },
+    { key: 'Spent', label: 'Spent' },
+    { key: 'Available', label: 'Available' }
+  ]
 
   return (
     <>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      {{
-          budget: (<ExpenseTable headers={budgetRows} data={budget.categoryLimits}></ExpenseTable>),
-          transactions: (<Transactions></Transactions>)
+      {
+        {
+          budget: <ExpenseTable headers={budgetHeaders} data={budget.mapCategories()} onAdd={onAddBudget}></ExpenseTable>,
+          transactions: <Transactions></Transactions>
         }[state.state]
       }
       </section>
@@ -45,6 +56,6 @@ export default function Home() {
   );
 }
 
-function homeReducer(_:IHomeContext, data: any){
+function homeReducer(_:IHomeContext, data: any) : IHomeContext {
   return { state: data.state }
 }

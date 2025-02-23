@@ -1,7 +1,9 @@
+import axios from "axios"
 import NextAuth from "next-auth"
+import { cookies } from "next/headers"
 import CredentialsProvider from "next-auth/providers/credentials"
 
-const authOptions = NextAuth({
+export const authOptions = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt'
@@ -26,15 +28,20 @@ const authOptions = NextAuth({
           // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
           // You can also use the `req` object to obtain additional parameters
           // (i.e., the request IP address)
-          const res = await fetch(`${process.env.API_URL}/user/Authenticate`, {
+          const username = credentials?.username
+          const password = credentials?.password
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/Authenticate`, {
             method: 'POST',
-            body: JSON.stringify({username: credentials?.username, password: credentials?.password}),
-            headers: { "Content-Type": "application/json" }
+            body: JSON.stringify({ username, password}),
+            headers: { "Content-Type": "application/json" },
+            credentials: 'include',
           })
           const user = await res.json()
-    
           // If no error and we have user data, return it
           if (res.ok && user) {
+            const cookieStore = await cookies();
+            cookieStore.set('token', user.token, { secure: true });
+            console.log(cookieStore);
             return user
           }
           // Return null if user data could not be retrieved
@@ -44,9 +51,6 @@ const authOptions = NextAuth({
   ],
   callbacks: {
     jwt({ token, user }) {
-      if (user) { // User is available during sign-in
-        token.id = user.id
-      }
       return token
     },
     session({ session, token }) {

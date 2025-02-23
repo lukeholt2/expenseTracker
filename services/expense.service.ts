@@ -1,24 +1,26 @@
-// import { Expense } from '../models/expense';
-// import { Budget } from '../models/budget';
-// import { map } from 'rxjs/operators';
+import { Expense } from '../models/expense';
+import { Budget } from '../models/budget';
+import axios from 'axios';
+import { Lifecycle, scoped } from 'tsyringe';
+//import { BehaviorSubject, Observable } from 'rxjs';
 
+@scoped(Lifecycle.ContainerScoped)
+export class ExpenseService {
 
-// export class ExpenseService {
+  private get baseEndpoint(){
+    return `${process.env.NEXT_PUBLIC_API_URL}/expense`;
+  }
 
-//   private readonly baseEndpoint = `${process.env.apiURL}/api/expense`;
-
-//   #currentExpensesSubject: BehaviorSubject<Expense[]>;
+//   private currentExpensesSubject: BehaviorSubject<Expense[]>;
 //   public currentExpenses$: Observable<Expense[]>;
 
-//   constructor(private http: HttpClient) {
-//     this.#currentExpensesSubject = new BehaviorSubject<Expense[]>([]);
-//     this.currentExpenses$ = this.#currentExpensesSubject.asObservable();
-//   }
 
-//   public updateBudget(budget: Budget) {
-//     const endpoint = `${this.baseEndpoint}/Budget`;
-//     return this.http.put<Budget>(endpoint, budget);
-//   }
+  constructor() {
+    
+    //this.currentExpensesSubject = new BehaviorSubject<Expense[]>([]);
+    //this.currentExpenses$ = this.currentExpensesSubject.asObservable();
+  }
+
 
 //   public addExpense(expense: Expense, receiptImage?: File) {
 //     const endpoint = `${this.baseEndpoint}`;
@@ -43,7 +45,7 @@
 //   public getAll(monthOfInterest?: number, yearOfInterest?: number, category?: string): Observable<Expense[]> {
 //     const endpoint = `${this.baseEndpoint}`;
 
-//     let queryParams: HttpParams = new HttpParams();
+//     let queryParams = ;
 //     if (monthOfInterest !== undefined) {
 //       queryParams = queryParams.append("monthOfInterest", monthOfInterest);
 //     }
@@ -94,19 +96,15 @@
 //   }
 
 
-//   public getBudget() {
-//     const endpoint = `${this.baseEndpoint}/Budget`;
-//     return this.http.get<Budget>(endpoint);
-//   }
 
-// }
+}
 
-// export interface TotalBreakdown {
-//   creditTotals: number[];
-//   debitTotals: number[];
-// }
+export interface TotalBreakdown {
+  creditTotals: number[];
+  debitTotals: number[];
+}
 
-// export interface CategoryBreakdown {
-//   category: string;
-//   value: number;
-// }
+export interface CategoryBreakdown {
+  category: string;
+  value: number;
+}
