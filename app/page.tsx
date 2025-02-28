@@ -7,6 +7,8 @@ import Navigation from "@/components/navigation";
 import Transactions from "@/components/transactions";
 import { getBudget, updateBudget } from './actions';
 import { Budget } from '@/models/budget';
+import { useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, DatePicker, Input, Autocomplete, AutocompleteItem, ModalFooter, Button } from "@heroui/react";
+import BudgetModal from "@/components/budgetModal";
 
 export default function Home() {
 
@@ -14,6 +16,9 @@ export default function Home() {
 
   const [state, dispatch] = useReducer(homeReducer, { state: 'budget' });
   const [budget, setBudget] = useState(new Budget())
+
+  const [categoryToEdit, setCategoryToEdit] = useState(null);
+  
 
   useEffect(() => {
      const updateBudget = async () => {
@@ -32,9 +37,10 @@ export default function Home() {
   }, [budget, setBudget, updateBudget])
 
   const onEditCategory = useCallback(async (cat: any) => {
-    console.log(cat)
-    budget.categoryLimits[+cat.key] = { category: cat.category, budgeted: cat.limit, spent: cat.actual }
+    budget.categoryLimits[+cat.key - 1] = { category: cat.category, limit: cat.limit, actual: cat.actual }
+    console.log(budget)
     setBudget(Object.assign(new Budget(), budget));
+    setCategoryToEdit(null);
     const _ = await updateBudget(JSON.stringify(budget));
   }, [budget, setBudget, updateBudget])
 
@@ -49,12 +55,13 @@ export default function Home() {
   return (
     <>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+      { categoryToEdit && <BudgetModal budget={categoryToEdit} onSave={onEditCategory}></BudgetModal>}
       {
         {
           budget: (<ExpenseTable 
               headers={budgetHeaders} 
               data={budgetCategories} 
-              onEdit={onEditCategory}
+              onEdit={(cat) => setCategoryToEdit(cat)}
               onAdd={onAddBudget}></ExpenseTable>),
           transactions: <Transactions></Transactions>
         }[state.state]

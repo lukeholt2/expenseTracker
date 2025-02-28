@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { Button, DateInput, Input } from "@heroui/react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, getKeyValue } from "@heroui/table";
 import {parseAbsoluteToLocal, toCalendarDate} from "@internationalized/date"
-import { EditIcon } from "./editIcon";
+import { EditIcon } from "./icons";
 
 interface TableProps {
   headers: any[];

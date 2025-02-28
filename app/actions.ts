@@ -1,7 +1,5 @@
 'use server';
 import { cookies } from "next/headers";
-import { Budget } from '@/models/budget';
-import { Expense } from "@/models/expense";
 
 function baseEndpoint() {
   return `${process.env.NEXT_PUBLIC_API_URL}/expense`;
@@ -91,13 +89,13 @@ export async function getExpenses(monthOfInterest?: number, yearOfInterest?: num
   return await res.json();
 }
 
-export async function addExpense(expense: string) {
+export async function addOrEditExpense(expense: string, update?: boolean) {
   const cookieStore = await cookies();
   const endpoint = baseEndpoint();
   const formData = new FormData();
   formData.append('expense', expense);
   const res = await fetch(endpoint, {
-    method: 'POST',
+    method: update ? 'PUT' : 'POST',
     body: formData,
     headers: {
       "Authorization": `Bearer ${cookieStore.get('token')?.value}`
