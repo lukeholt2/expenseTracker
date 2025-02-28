@@ -32,6 +32,7 @@ export default function Home() {
   }, [budget, setBudget, updateBudget])
 
   const onEditCategory = useCallback(async (cat: any) => {
+    console.log(cat)
     budget.categoryLimits[+cat.key] = { category: cat.category, budgeted: cat.limit, spent: cat.actual }
     setBudget(Object.assign(new Budget(), budget));
     const _ = await updateBudget(JSON.stringify(budget));
@@ -41,7 +42,8 @@ export default function Home() {
     { key: 'Category', label: 'Category' },
     { key: 'Budgeted', label: 'Budgeted' },
     { key: 'Spent', label: 'Spent' },
-    { key: 'Available', label: 'Available' }
+    { key: 'Available', label: 'Available' },
+    { key: 'Actions', label: 'actions' }
   ]
 
   return (
@@ -52,7 +54,6 @@ export default function Home() {
           budget: (<ExpenseTable 
               headers={budgetHeaders} 
               data={budgetCategories} 
-              editableColumns={['Category', 'Budgeted']}
               onEdit={onEditCategory}
               onAdd={onAddBudget}></ExpenseTable>),
           transactions: <Transactions></Transactions>

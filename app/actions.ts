@@ -1,9 +1,9 @@
 'use server';
-import axios from "axios";
 import { cookies } from "next/headers";
 import { Budget } from '@/models/budget';
+import { Expense } from "@/models/expense";
 
-function baseEndpoint(){
+function baseEndpoint() {
   return `${process.env.NEXT_PUBLIC_API_URL}/expense`;
 }
 
@@ -15,7 +15,7 @@ export async function getBudget() {
   const res = await fetch(endpoint, {
     headers: {
       'Content-type': 'application/json',
-      "Authorization": `Bearer ${cookieStore.get('token')?.value}` 
+      "Authorization": `Bearer ${cookieStore.get('token')?.value}`
     }
   });
   // Pass data to the page via props
@@ -32,7 +32,7 @@ export async function updateBudget(budget: string) {
     method: 'PUT',
     headers: {
       'Content-type': 'application/json',
-      "Authorization": `Bearer ${cookieStore.get('token')?.value}` 
+      "Authorization": `Bearer ${cookieStore.get('token')?.value}`
     }
   });
   const updated = await res.json();
@@ -51,31 +51,59 @@ export async function getCategories(monthOfInterest?: number, yearOfInterest?: n
   const res = await fetch(endpoint, {
     headers: {
       'Content-type': 'application/json',
-      "Authorization": `Bearer ${cookieStore.get('token')?.value}` 
+      "Authorization": `Bearer ${cookieStore.get('token')?.value}`
     },
   });
   return await res.json();
 }
 
-export async function getExpenses(monthOfInterest?: number, yearOfInterest?: number, category?: string)  {
-    let endpoint = `${baseEndpoint()}`;
-    const cookieStore = await cookies();
-    if (monthOfInterest !== undefined) {
-      endpoint = `${endpoint}?monthOfInterest=${monthOfInterest}`;
-    }
-    if (yearOfInterest !== undefined) {
-      endpoint = `${endpoint}?yearOfInterest=${yearOfInterest}`;
-    }
-    if (category !== undefined) {
-      endpoint = `${endpoint}?category=${category}`;
-    }
-    const res = await fetch(endpoint, {
-      headers: {
-        'Content-type': 'application/json',
-        "Authorization": `Bearer ${cookieStore.get('token')?.value}` 
-      },
-    });
-    return await res.json();
+export async function getPaymentTypes() {
+  const cookieStore = await cookies();
+  const endpoint = `${baseEndpoint()}/PaymentTypes`;
+  const res = await fetch(endpoint, {
+    headers: {
+      'Content-type': 'application/json',
+      "Authorization": `Bearer ${cookieStore.get('token')?.value}`
+    },
+  });
+  return await res.json();
 }
 
-  
+
+export async function getExpenses(monthOfInterest?: number, yearOfInterest?: number, category?: string) {
+  let endpoint = `${baseEndpoint()}`;
+  const cookieStore = await cookies();
+  if (monthOfInterest !== undefined) {
+    endpoint = `${endpoint}?monthOfInterest=${monthOfInterest}`;
+  }
+  if (yearOfInterest !== undefined) {
+    endpoint = `${endpoint}?yearOfInterest=${yearOfInterest}`;
+  }
+  if (category !== undefined) {
+    endpoint = `${endpoint}?category=${category}`;
+  }
+  const res = await fetch(endpoint, {
+    headers: {
+      'Content-type': 'application/json',
+      "Authorization": `Bearer ${cookieStore.get('token')?.value}`
+    },
+  });
+  return await res.json();
+}
+
+export async function addExpense(expense: string) {
+  const cookieStore = await cookies();
+  const endpoint = baseEndpoint();
+  const formData = new FormData();
+  formData.append('expense', expense);
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      "Authorization": `Bearer ${cookieStore.get('token')?.value}`
+    },
+  });
+  return await res.json();
+}
+
+

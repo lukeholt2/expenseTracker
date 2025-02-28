@@ -1,29 +1,31 @@
 'use client';
-import { Button, Input } from "@heroui/react";
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, getKeyValue } from "@heroui/table";
 import { useCallback } from "react";
+import { Button, DateInput, Input } from "@heroui/react";
+import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, getKeyValue } from "@heroui/table";
+import {parseAbsoluteToLocal, toCalendarDate} from "@internationalized/date"
+import { EditIcon } from "./editIcon";
 
 interface TableProps {
   headers: any[];
   data?: any[];
-  editableColumns?: string[];
   onAdd: (data: any) => void;
-  onEdit?: (data: any) => void
+  onEdit: (data: any) => void
 }
 
 export const ExpenseTable = (props: TableProps) => {
 
-  const onValueChange = useCallback((item: any) => {
-    if (props.onEdit) {
-      props.onEdit(item);
-    }
-  }, [props.onEdit])
-
   const renderCell = useCallback((item: any, columnKey: string | number) => {
     const value = getKeyValue(item, columnKey);
+    if (columnKey == 'date'){
+      return (<DateInput
+        isReadOnly
+        defaultValue={toCalendarDate(parseAbsoluteToLocal(value))}
+      />)
+    } else if (columnKey == 'Actions'){
+      return (<Button isIconOnly onPress={() => props.onEdit(item)}> <EditIcon></EditIcon> </Button>)
+    }
     return <Input
-    //  isReadOnly={!props.editableColumns?.includes(columnKey.toString())}
-      label={columnKey}
+     isReadOnly={true}
       value={value}
       startContent={
         typeof value == 'number' && (<div className="pointer-events-none flex items-center">
