@@ -37,7 +37,6 @@ export const ExpenseTable = (props: TableProps) => {
 
   return (
     <>
-      <Button color="primary" onPress={props.onAdd}>Add New</Button>
       <Table aria-label="Example table with dynamic content" isVirtualized>
         <TableHeader columns={props.headers}>
           {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -52,6 +51,8 @@ export const ExpenseTable = (props: TableProps) => {
           )}
         </TableBody>
       </Table>
+
+    <Button fullWidth color="primary" variant="shadow" onPress={props.onAdd}>Add New</Button>
     </>
 
   );

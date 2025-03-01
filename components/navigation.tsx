@@ -5,8 +5,10 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Paper } from "@mui/material";
 import { HomeContext } from "@/app/homeContext";
+import { signOut } from "next-auth/react";
 
 export default function Navigation() {
   const [value, setValue] = useState(0);
@@ -20,12 +22,17 @@ export default function Navigation() {
           showLabels
           value={value}
           onChange={(event, newValue) => {
-            setValue(newValue);
-            dispatch({state: newValue == 0 ? 'budget' : 'transactions' })
+            if (newValue == 2) {
+              signOut()
+            } else {
+              setValue(newValue);
+              dispatch({ state: newValue == 0 ? 'budget' : 'transactions' })
+            }
           }}
         >
-          <BottomNavigationAction label="budget" icon={<AccountBalanceIcon  />} />
+          <BottomNavigationAction label="budget" icon={<AccountBalanceIcon />} />
           <BottomNavigationAction label="transactions" icon={<ReceiptLongIcon />} />
+          <BottomNavigationAction label="logout" icon={<ExitToAppIcon />} />
         </BottomNavigation>
 
       </Paper>

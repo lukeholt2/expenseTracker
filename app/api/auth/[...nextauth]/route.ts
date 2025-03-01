@@ -1,4 +1,3 @@
-import axios from "axios"
 import NextAuth from "next-auth"
 import { cookies } from "next/headers"
 import CredentialsProvider from "next-auth/providers/credentials"
@@ -41,7 +40,6 @@ export const authOptions = NextAuth({
           if (res.ok && user) {
             const cookieStore = await cookies();
             cookieStore.set('token', user.token, { secure: true });
-            console.log(cookieStore);
             return user
           }
           // Return null if user data could not be retrieved
@@ -50,10 +48,17 @@ export const authOptions = NextAuth({
       })
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
+      const username = (user as any)?.username;
+      if(username){
+        token.username = (user as any)?.username
+      }      
       return token
     },
     session({ session, token }) {
+      if(token.username && session.user){
+        session.user.name =  token.username.toString()
+      }
       return session
     },
   },

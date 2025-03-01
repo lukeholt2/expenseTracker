@@ -7,7 +7,6 @@ import Navigation from "@/components/navigation";
 import Transactions from "@/components/transactions";
 import { getBudget, updateBudget } from './actions';
 import { Budget } from '@/models/budget';
-import { useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, DatePicker, Input, Autocomplete, AutocompleteItem, ModalFooter, Button } from "@heroui/react";
 import BudgetModal from "@/components/budgetModal";
 
 export default function Home() {

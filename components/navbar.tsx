@@ -10,14 +10,14 @@ import { useSession } from "next-auth/react";
 
 export const Navbar = () => {
 
-  const { data } = useSession({ required: true })
-
+  const { update, data, status } = useSession({ required: true })
+  
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="end">
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
             <NavbarItem>
-              <Avatar name={data?.user?.name ?? 'user'}></Avatar>
+              <Avatar size="md" name={data?.user?.name ?? 'user'}></Avatar>
             </NavbarItem>
         </ul>
       </NavbarContent>
