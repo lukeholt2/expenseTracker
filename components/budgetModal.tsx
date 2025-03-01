@@ -41,7 +41,7 @@ export default function BudgetModal(props: any) {
                                 Close
                             </Button>
                             <Button color="primary" type="submit" onPress={() => {
-                                props.onSave({ key: props.budget.key, category, limit: amount, actual: props.budget.Spent })
+                                props.onSave({ key: props.budget.key, category, limit: +amount, actual: props.budget.Spent })
                                 onClose();
                             }}>
                                 Save

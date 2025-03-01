@@ -1,11 +1,10 @@
 'use client'
 import { useCallback, useEffect, useState } from "react";
-import { } from "@heroui/modal";
 import { ExpenseTable } from '@/components/expenseTable';
-import { getExpenses } from "@/app/actions";
+import { getExpenses } from "@/app/transactions/actions";
 import {useDisclosure} from "@heroui/react";
 import { Expense } from "@/models/expense";
-import ExpenseModal from "./expenseModal";
+import ExpenseModal from "@/components/expenseModal";
 
 
 export default function Transactions() {

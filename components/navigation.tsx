@@ -6,14 +6,14 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { Paper } from "@mui/material";
-import { HomeContext } from "@/app/homeContext";
+import { Paper } from "@mui/material";;
 import { signOut } from "next-auth/react";
+import { useRouter } from 'next/navigation'
 
 export default function Navigation() {
   const [value, setValue] = useState(0);
 
-  const dispatch = useContext(HomeContext)
+  const router = useRouter();
 
   return (
     <Box sx={{ width: 500 }}>
@@ -26,7 +26,7 @@ export default function Navigation() {
               signOut()
             } else {
               setValue(newValue);
-              dispatch({ state: newValue == 0 ? 'budget' : 'transactions' })
+              router.push(newValue == 0 ? '/budget' : '/transactions')
             }
           }}
         >
