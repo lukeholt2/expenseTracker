@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import { cookies } from "next/headers"
 import CredentialsProvider from "next-auth/providers/credentials"
 
-export const authOptions = NextAuth({
+const authOptions = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt'
