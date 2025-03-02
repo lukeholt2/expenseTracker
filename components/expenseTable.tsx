@@ -10,6 +10,7 @@ interface TableProps {
   data: any[];
   onAdd: (data: any) => void;
   onEdit: (data: any) => void
+  topContent?: any
 }
 
 export const ExpenseTable = (props: TableProps) => {
@@ -69,6 +70,7 @@ export const ExpenseTable = (props: TableProps) => {
           props.onEdit(props.data[index])}
         }
         classNames={classNames}
+        topContent={props.topContent}
         bottomContent={tableOptions()}>
         <TableHeader columns={props.headers}>
           {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}

@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { addOrEditExpense, getCategories, getPaymentTypes } from "@/app/transactions/actions";
 import { Expense } from "@/models/expense";
-import { Modal, ModalContent, ModalHeader, ModalBody, DatePicker, Input, Autocomplete, AutocompleteItem, ModalFooter, Button } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, 
+        DatePicker, Input, Autocomplete, 
+        AutocompleteItem, ModalFooter, Button 
+} from "@heroui/react";
 import { toCalendarDate, parseAbsoluteToLocal, fromDate, today } from "@internationalized/date";
 
 export default function ExpenseModal(props: any) {

@@ -6,7 +6,6 @@ export class Budget {
 
     public mapCategories() : any[] | undefined {
         return this.categoryLimits?.map((cat, index) => {
-            console.log(cat);
             return {
                 key: `${index + 1}`,
                 Category: cat.category,

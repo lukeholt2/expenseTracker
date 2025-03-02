@@ -46,7 +46,7 @@ export async function getExpenses(monthOfInterest?: number, yearOfInterest?: num
   if (yearOfInterest !== undefined) {
     endpoint = `${endpoint}?yearOfInterest=${yearOfInterest}`;
   }
-  if (category !== undefined) {
+  if (category) {
     endpoint = `${endpoint}?category=${category}`;
   }
   const res = await fetch(endpoint, {

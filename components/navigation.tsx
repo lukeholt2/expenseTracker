@@ -1,5 +1,5 @@
 'use client'
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -8,15 +8,18 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Paper } from "@mui/material";;
 import { signOut } from "next-auth/react";
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 export default function Navigation() {
-  const [value, setValue] = useState(0);
 
   const router = useRouter();
+  const pathName = usePathname();
+
+  const [value, setValue] = useState(pathName == '/budget' ? 0 : 1);
+
 
   return (
-    <Box sx={{ width: 500 }}>
+    <Box sx={{ width: 500 }} suppressHydrationWarning={true}>
       <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
         <BottomNavigation
           showLabels
