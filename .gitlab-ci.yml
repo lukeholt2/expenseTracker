@@ -14,7 +14,7 @@ include:
 
 audit-modules:
   variables:
-    AUDIT_LEVEL: critical
+    AUDIT_LEVEL: high
 
 
 register-deploy-version:
