@@ -23,10 +23,9 @@ export default function Transactions() {
   const tableRows = [
     { key: 'date', label: 'Date' },
     { key: 'amount', label: 'Amount' },
-    { key: 'item', label: 'Item' },
+   // { key: 'item', label: 'Item' },
     { key: 'location', label: 'Location' },
-    { key: 'category', label: 'Category' },
-    { key: 'Actions', label: 'Actions' }
+    { key: 'category', label: 'Category' }
   ]
 
   return (
@@ -47,9 +46,8 @@ export default function Transactions() {
           onOpen();
         }} 
         onEdit={(expense) => {
-          console.log(expense)
-        setExpenseToSave(expense);
-        onOpen();
+          setExpenseToSave(expense);
+          onOpen();
       }}></ExpenseTable>
     </>
   );

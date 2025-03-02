@@ -1,15 +1,15 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ExpenseTable } from '@/components/expenseTable';
-import { Card, CardBody, CardHeader } from "@heroui/react";
+import { Card, CardBody, CardHeader, useDisclosure } from "@heroui/react";
 import { getBudget, updateBudget } from './actions';
 import { Budget } from '@/models/budget';
 import BudgetModal from "@/components/budgetModal";
 
 export default function Home() {
   const [budget, setBudget] = useState(new Budget())
-
   const [categoryToEdit, setCategoryToEdit] = useState(null);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   useEffect(() => {
     const updateBudget = async () => {
@@ -19,7 +19,7 @@ export default function Home() {
     updateBudget();
   }, [])
 
-  const budgetCategories = useMemo(() => budget.mapCategories(), [budget])
+  const budgetCategories = useMemo(() => budget.mapCategories() ?? [], [budget])
 
   const budgetRemaining= useMemo(() => {
     const totalLimit = budget.categoryLimits.map(c => c.limit).reduce((prev, current) => prev + current, 0);
@@ -45,8 +45,7 @@ export default function Home() {
     { key: 'Category', label: 'Category' },
     { key: 'Budgeted', label: 'Budgeted' },
     { key: 'Spent', label: 'Spent' },
-    { key: 'Available', label: 'Available' },
-    { key: 'Actions', label: 'actions' }
+    { key: 'Available', label: 'Available' }
   ]
 
   return (
@@ -56,11 +55,23 @@ export default function Home() {
           <h4>${budgetRemaining} Remaining</h4>
         </CardBody>
       </Card>
-      {categoryToEdit && <BudgetModal budget={categoryToEdit} onSave={onEditCategory}></BudgetModal>}
+      {categoryToEdit && <BudgetModal 
+            budget={categoryToEdit} 
+            onSave={onEditCategory}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            onclose={() => {
+              setCategoryToEdit(null);
+            }}
+            >
+          </BudgetModal>}
       <ExpenseTable
         headers={budgetHeaders}
         data={budgetCategories}
-        onEdit={(cat) => setCategoryToEdit(cat)}
+        onEdit={(cat) => {
+          setCategoryToEdit(cat);
+          onOpen();
+        }}
         onAdd={onAddBudget}>
       </ExpenseTable>
     </>

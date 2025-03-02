@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, Input, ModalFooter, Button } from "@heroui/react";
+import { useState } from "react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Input, ModalFooter, Button } from "@heroui/react";
 
 
 export interface BudgetModalProps {
@@ -8,12 +8,11 @@ export interface BudgetModalProps {
 }
 
 export default function BudgetModal(props: any) {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [category, setCategory] = useState(props.budget?.Category);
     const [amount, setAmount] = useState(props.budget?.Budgeted);
-    console.log(props.budget);
+
     return (
-        <Modal defaultOpen={true} onOpenChange={onOpenChange}>
+        <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
             <ModalContent>
                 {(onClose) => (
                     <>
@@ -37,11 +36,19 @@ export default function BudgetModal(props: any) {
 
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="danger" variant="light" onPress={onClose}>
+                            <Button color="danger" variant="light" onPress={() => {
+                                props.onclose();
+                                onClose();
+                            }}>
                                 Close
                             </Button>
                             <Button color="primary" type="submit" onPress={() => {
-                                props.onSave({ key: props.budget.key, category, limit: +amount, actual: props.budget.Spent })
+                                props.onSave({
+                                    key: props.budget.key,
+                                    category,
+                                    limit: +amount,
+                                    actual: props.budget.Spent
+                                })
                                 onClose();
                             }}>
                                 Save
