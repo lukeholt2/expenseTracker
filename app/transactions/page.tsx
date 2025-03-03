@@ -7,6 +7,11 @@ import { Expense } from "@/models/expense";
 import ExpenseModal from "@/components/expenseModal";
 import { Filter } from "@/models/filter";
 
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+});
+
 export default function Transactions() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [expenseToSave, setExpenseToSave] = useState<Expense | null>(null)
@@ -17,7 +22,8 @@ export default function Transactions() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const loadState = useCallback(async () => {
-    setExpenses(await getExpenses(filterOptions.month, filterOptions.year, filterOptions.category));
+    const expenses = await getExpenses(filterOptions.month, filterOptions.year, filterOptions.category);
+    setExpenses(expenses.reverse());
     const fetchedCategories: string[] = await getCategories(filterOptions.month, filterOptions.year);
     setCategories(['All', ...fetchedCategories])
   }, [expenses, setExpenses, categories, setCategories, filterOptions])
@@ -35,8 +41,10 @@ export default function Transactions() {
     { key: 'category', label: 'Category' }
   ]
 
-  const totalSpent = useMemo(() => expenses.map(e => e.amount).reduce((prev, current) => prev + current, 0), [expenses])
-
+  const totalSpent = useMemo(() => {
+    const total = expenses.map(e => e.amount).reduce((prev, current) => prev + current, 0);
+    return currencyFormatter.format(total);
+  }, [expenses])
 
   const categoryFilter = useCallback(() => {
     return (
@@ -67,7 +75,7 @@ export default function Transactions() {
     <>
       <Card style={{ marginBottom: '1em' }}>
         <CardBody className="pt-4 px-4 flex-col items-center">
-          <h4>${totalSpent}</h4>
+          <h4>{totalSpent}</h4>
         </CardBody>
       </Card>
       {expenseToSave && <ExpenseModal

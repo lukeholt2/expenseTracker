@@ -9,7 +9,7 @@ import { toCalendarDate, parseAbsoluteToLocal, fromDate, today } from "@internat
 
 export default function ExpenseModal(props: any) {
 
-    const [expenseToSave, setExpenseToSave] = useState<Expense>(props.expense ?? new Expense())
+    const [expenseToSave, setExpenseToSave] = useState<Expense>(props.expense)
     const [categories, setCategories] = useState([]);
     const [paymentTypes, setPaymentTypes] = useState([]);
 
@@ -45,7 +45,7 @@ export default function ExpenseModal(props: any) {
     }, [])
 
     return (
-        <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
+        <Modal onClose={props.onclose} isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
             <ModalContent>
                 {(onClose) => (
                     <>

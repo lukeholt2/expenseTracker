@@ -66,7 +66,7 @@ export const ExpenseTable = (props: TableProps) => {
         selectionMode="single"
         selectionBehavior="replace"
         onSelectionChange={(set: any) => {
-          const index = set.entries().next().value[0] - 1;
+          const index = set.entries().next()?.value?.[0] - 1;
           props.onEdit(props.data[index])}
         }
         classNames={classNames}

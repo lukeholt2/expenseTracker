@@ -6,6 +6,11 @@ import { getBudget, updateBudget } from './actions';
 import { Budget } from '@/models/budget';
 import BudgetModal from "@/components/budgetModal";
 
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+});
+
 export default function Home() {
   const [budget, setBudget] = useState(new Budget())
   const [categoryToEdit, setCategoryToEdit] = useState(null);
@@ -24,7 +29,7 @@ export default function Home() {
   const budgetRemaining= useMemo(() => {
     const totalLimit = budget.categoryLimits.map(c => c.limit).reduce((prev, current) => prev + current, 0);
     const totalSpent = budget.categoryLimits.map(c => c.actual).reduce((prev, current) => prev + current, 0);
-    return totalLimit - totalSpent;
+    return currencyFormatter.format(totalLimit - totalSpent);
   }, [budget])
 
   const onAddBudget = useCallback(async () => {
@@ -52,7 +57,7 @@ export default function Home() {
     <>
       <Card>
         <CardBody className="pt-4 px-4 flex-col items-center">
-          <h4>${budgetRemaining} Remaining</h4>
+          <h4>{budgetRemaining} Remaining</h4>
         </CardBody>
       </Card>
       {categoryToEdit && <BudgetModal 

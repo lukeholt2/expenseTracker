@@ -8,12 +8,12 @@ function baseEndpoint() {
 
 export async function getCategories(monthOfInterest?: number, yearOfInterest?: number) {
   const cookieStore = await cookies();
-  let endpoint = `${baseEndpoint()}/Categories`;
-  if (monthOfInterest !== undefined) {
-    endpoint = `${endpoint}?monthOfInterest=${monthOfInterest}`;
+  let endpoint = `${baseEndpoint()}/Categories?`;
+  if (monthOfInterest) {
+    endpoint = `${endpoint}monthOfInterest=${monthOfInterest}`;
   }
-  if (yearOfInterest !== undefined) {
-    endpoint = `${endpoint}?yearOfInterest=${yearOfInterest}`;
+  if (yearOfInterest) {
+    endpoint = `${endpoint}&yearOfInterest=${yearOfInterest}`;
   }
   const res = await fetch(endpoint, {
     headers: {
@@ -41,7 +41,7 @@ export async function getExpenses(monthOfInterest?: number, yearOfInterest?: num
   let endpoint = `${baseEndpoint()}?`;
   const cookieStore = await cookies();
   if (yearOfInterest) {
-    endpoint = `${endpoint}&yearOfInterest=${yearOfInterest}`;
+    endpoint = `${endpoint}yearOfInterest=${yearOfInterest}`;
   }
   if (monthOfInterest) {
     endpoint = `${endpoint}&monthOfInterest=${monthOfInterest}`;
