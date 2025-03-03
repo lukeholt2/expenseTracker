@@ -1,30 +1,32 @@
 'use client'
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { ExpenseTable } from '@/components/expenseTable';
 import { getCategories, getExpenses } from "@/app/transactions/actions";
 import { Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
 import { Expense } from "@/models/expense";
 import ExpenseModal from "@/components/expenseModal";
-
+import { Filter } from "@/models/filter";
 
 export default function Transactions() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [expenseToSave, setExpenseToSave] = useState<Expense | null>(null)
   const [categories, setCategories] = useState<string[]>([]);
 
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filterOptions, setFilterOptions] = useState<Filter>(new Filter());
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const loadState = useCallback(async () => {
-    setExpenses(await getExpenses(undefined, undefined, selectedCategory));
-    const categories: string[] = await getCategories();
-    setCategories(['All', ...categories])
-  }, [expenses, setExpenses, categories, setCategories, selectedCategory])
+    setExpenses(await getExpenses(filterOptions.month, filterOptions.year, filterOptions.category));
+    const fetchedCategories: string[] = await getCategories(filterOptions.month, filterOptions.year);
+    setCategories(['All', ...fetchedCategories])
+  }, [expenses, setExpenses, categories, setCategories, filterOptions])
+
 
   useEffect(() => {
     loadState()
-  }, [selectedCategory])
+  }, [filterOptions])
+
 
   const tableRows = [
     { key: 'date', label: 'Date' },
@@ -36,19 +38,19 @@ export default function Transactions() {
   const totalSpent = useMemo(() => expenses.map(e => e.amount).reduce((prev, current) => prev + current, 0), [expenses])
 
 
-  const categoryFilter = () => {
+  const categoryFilter = useCallback(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <div className="flex gap-3">
             <Dropdown backdrop="blur">
               <DropdownTrigger>
-                <Button variant="bordered" size='sm' className="text-small">{selectedCategory}</Button>
+                <Button variant="bordered" size='sm' className="text-small">{filterOptions.category}</Button>
               </DropdownTrigger>
               <DropdownMenu
-                selectedKeys={[selectedCategory]}
+                selectedKeys={[filterOptions.category]}
                 selectionMode="single"
-                onSelectionChange={(key) => setSelectedCategory(key.anchorKey ?? 'All')}
+                onSelectionChange={(key) => setFilterOptions({ ...filterOptions, category: key.anchorKey ?? 'All' })}
                 aria-label="Category Filter"
                 variant="faded"
               >
@@ -59,11 +61,11 @@ export default function Transactions() {
         </div>
       </div>
     )
-  }
+  }, [categories, filterOptions, setFilterOptions])
 
   return (
     <>
-      <Card style={{marginBottom: '1em'}}>
+      <Card style={{ marginBottom: '1em' }}>
         <CardBody className="pt-4 px-4 flex-col items-center">
           <h4>${totalSpent}</h4>
         </CardBody>

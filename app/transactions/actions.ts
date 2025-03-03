@@ -2,7 +2,7 @@
 import { cookies } from "next/headers";
 
 function baseEndpoint() {
-  return `${process.env.NEXT_PUBLIC_API_URL}/expense`;
+  return `${process.env.API_URL}/expense`;
 }
 
 
@@ -38,22 +38,26 @@ export async function getPaymentTypes() {
 
 
 export async function getExpenses(monthOfInterest?: number, yearOfInterest?: number, category?: string) {
-  let endpoint = `${baseEndpoint()}`;
+  let endpoint = `${baseEndpoint()}?`;
   const cookieStore = await cookies();
-  if (monthOfInterest !== undefined) {
-    endpoint = `${endpoint}?monthOfInterest=${monthOfInterest}`;
+  if (yearOfInterest) {
+    endpoint = `${endpoint}&yearOfInterest=${yearOfInterest}`;
   }
-  if (yearOfInterest !== undefined) {
-    endpoint = `${endpoint}?yearOfInterest=${yearOfInterest}`;
+  if (monthOfInterest) {
+    endpoint = `${endpoint}&monthOfInterest=${monthOfInterest}`;
   }
   if (category) {
-    endpoint = `${endpoint}?category=${category}`;
+    endpoint = `${endpoint}&category=${category}`;
   }
+  console.log(endpoint)
   const res = await fetch(endpoint, {
     headers: {
       'Content-type': 'application/json',
       "Authorization": `Bearer ${cookieStore.get('token')?.value}`
     },
+  }).catch((error) => {
+    console.log(error);
+    return error;
   });
   return await res.json();
 }

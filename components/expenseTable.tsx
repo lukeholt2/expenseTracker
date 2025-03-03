@@ -41,9 +41,9 @@ export const ExpenseTable = (props: TableProps) => {
 
   const tableOptions = () => {
     return (
-          <div className="flex gap-3">
+        <div className="flex gap-3">
           <Button fullWidth color="primary" variant="shadow" onPress={props.onAdd}>Add New</Button>
-          </div>
+        </div>
       )
   }
 

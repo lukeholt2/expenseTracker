@@ -29,12 +29,15 @@ const authOptions = NextAuth({
           // (i.e., the request IP address)
           const username = credentials?.username
           const password = credentials?.password
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/Authenticate`, {
+          const res = await fetch(`${process.env.API_URL}/user/Authenticate`, {
             method: 'POST',
             body: JSON.stringify({ username, password}),
             headers: { "Content-Type": "application/json" },
             credentials: 'include',
-          })
+          }).catch((error) => {
+            console.error(error)
+            return error
+          });
           const user = await res.json()
           // If no error and we have user data, return it
           if (res.ok && user) {
