@@ -4,6 +4,12 @@
 
 - [Complete rewrite, converting to a NextJS application](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/f504e35fcce30c3e550c066e9b7ed467450a8be7) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/28))
 
+## 2.0.0-rc4 (2025-03-04)
+
+### breaking (1 change)
+
+- [Complete rewrite, converting to a NextJS application](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/f504e35fcce30c3e550c066e9b7ed467450a8be7) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/28))
+
 ## 2.0.0-rc3 (2025-03-03)
 
 ### breaking (1 change)
