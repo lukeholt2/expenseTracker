@@ -43,9 +43,10 @@ export const ExpenseTable = (props: TableProps) => {
         selectionMode="single"
         selectionBehavior="replace"
         onSelectionChange={(set: any) => {
-          const index = set.entries().next()?.value?.[0] - 1;
-          props.onEdit(props.data[index])}
-        }
+          const index: number = Array.from<number>(set)[0]
+          const selected = props.data[index - 1] ?? props.data.find((d) => d.id == index);
+          props.onEdit(selected)
+        }}
         topContent={props.topContent}
         bottomContent={tableOptions()}>
         <TableHeader columns={props.headers}>
