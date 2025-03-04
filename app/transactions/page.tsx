@@ -6,11 +6,8 @@ import { Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownT
 import { Expense } from "@/models/expense";
 import ExpenseModal from "@/components/expenseModal";
 import { Filter } from "@/models/filter";
+import { currencyFormatter } from "@/utils/constants";
 
-const currencyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD'
-});
 
 export default function Transactions() {
   const [expenses, setExpenses] = useState<Expense[]>([]);

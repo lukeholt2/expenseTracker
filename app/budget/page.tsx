@@ -5,11 +5,7 @@ import { Card, CardBody, CardHeader, useDisclosure } from "@heroui/react";
 import { getBudget, updateBudget } from './actions';
 import { Budget } from '@/models/budget';
 import BudgetModal from "@/components/budgetModal";
-
-const currencyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD'
-});
+import { currencyFormatter } from "@/utils/constants";
 
 export default function Home() {
   const [budget, setBudget] = useState(new Budget())
