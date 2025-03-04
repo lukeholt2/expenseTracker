@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ExpenseTable } from '@/components/expenseTable';
 import { getCategories, getExpenses } from "@/app/transactions/actions";
 import { Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
@@ -16,6 +16,9 @@ export default function Transactions() {
 
   const [filterOptions, setFilterOptions] = useState<Filter>(new Filter());
 
+  // TODO: replace this with a proper time span
+  const [timeFilter, setTimeFilter] = useState('Month');
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const loadState = useCallback(async () => {
@@ -28,7 +31,7 @@ export default function Transactions() {
 
   useEffect(() => {
     loadState()
-  }, [filterOptions])
+  }, [filterOptions, timeFilter])
 
 
   const tableRows = [
@@ -37,6 +40,8 @@ export default function Transactions() {
     { key: 'location', label: 'Location' },
     { key: 'category', label: 'Category' }
   ]
+
+  const timeFilters = ['All', 'Month', 'Year']
 
   const totalSpent = useMemo(() => {
     const total = expenses.map(e => e.amount).reduce((prev, current) => prev + current, 0);
@@ -63,10 +68,36 @@ export default function Transactions() {
               </DropdownMenu>
             </Dropdown>
           </div>
+          <div className="flex gap-3">
+            <Dropdown backdrop="blur">
+              <DropdownTrigger>
+                <Button variant="bordered" size='sm' className="text-small">{timeFilter}</Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                selectedKeys={[timeFilter]}
+                selectionMode="single"
+                onSelectionChange={(key) => {
+                  const val = key.anchorKey;
+                  if (val == 'Year') {
+                    setFilterOptions({ ...filterOptions, month: undefined, year: new Date().getFullYear() });
+                  } else if (val == 'Month') {
+                    setFilterOptions({ ...new Filter(), category: filterOptions.category })
+                  } else {
+                    setFilterOptions({ ...filterOptions, month: undefined, year: undefined })
+                  }
+                  setTimeFilter(key.anchorKey ?? 'Month')
+                }}
+                aria-label="TimeSpan Filter"
+                variant="faded"
+              >
+                {timeFilters.map((cat) => <DropdownItem key={cat}>{cat}</DropdownItem>)}
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </div>
       </div>
     )
-  }, [categories, filterOptions, setFilterOptions])
+  }, [timeFilter, setTimeFilter, categories, filterOptions, setFilterOptions])
 
   return (
     <>
