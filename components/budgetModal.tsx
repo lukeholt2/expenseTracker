@@ -12,7 +12,7 @@ export default function BudgetModal(props: any) {
     const [amount, setAmount] = useState(props.budget?.Budgeted);
 
     return (
-        <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
+        <Modal onClose={props.onclose} isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
             <ModalContent>
                 {(onClose) => (
                     <>

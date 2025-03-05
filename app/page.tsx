@@ -11,5 +11,5 @@ export default function Page() {
         if (status == 'authenticated') {
             router.push('/budget');
         }
-    }, [])
+    }, [status, router])
 }

@@ -13,5 +13,5 @@ npm i
 Then to run the development server simply run:
 
 ```script
-next run dev
+npm run dev
 ```

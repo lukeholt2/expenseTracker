@@ -1,9 +1,9 @@
 'use client';
-import { useCallback, useMemo } from "react";
-import { Button, DateInput, Input } from "@heroui/react";
+import { useCallback } from "react";
+import { Button } from "@heroui/react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, getKeyValue } from "@heroui/table";
-import { parseAbsoluteToLocal, toCalendarDate } from "@internationalized/date"
-import { EditIcon } from "./icons";
+import { parseAbsoluteToLocal } from "@internationalized/date"
+import { currencyFormatter } from "@/utils/constants";
 
 interface TableProps {
   headers: any[];
@@ -18,58 +18,35 @@ export const ExpenseTable = (props: TableProps) => {
   const renderCell = useCallback((item: any, columnKey: string | number) => {
     const value = getKeyValue(item, columnKey);
     if (columnKey == 'date') {
-      return (<DateInput
-        isReadOnly
-        size="sm"
-        radius="sm"
-        defaultValue={toCalendarDate(parseAbsoluteToLocal(value))}
-      />)
-    } else if (columnKey == 'Actions') {
-      return (<Button isIconOnly onPress={() => props.onEdit(item)}> <EditIcon></EditIcon> </Button>)
-    }
-    return <Input
-      size="sm"
-      isReadOnly={true}
-      value={value}
-      startContent={
-        typeof value == 'number' && (<div className="pointer-events-none flex items-center">
-          <span className="text-default-400 text-small">$</span>
-        </div>)
-      }
-    />
+      return parseAbsoluteToLocal(value).toDate().toLocaleDateString(undefined, { month: 'numeric', day: 'numeric', year: '2-digit'})
+    } 
+    return typeof value == 'number' ? currencyFormatter.format(value) : value;
   }, []);
 
   const tableOptions = () => {
     return (
-          <div className="flex gap-3">
+        <div className="flex gap-3">
           <Button fullWidth color="primary" variant="shadow" onPress={props.onAdd}>Add New</Button>
-          </div>
+        </div>
       )
   }
 
-  const classNames = useMemo(
-    () => ({
-      wrapper: ["max-h-[382px]", "max-w-2xl"],
-      th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
-    }),
-    [],
-  );
 
   return (
-    <>
+    <div style={{width: '99vw'}}>
       <Table aria-label="Dynamic Expense Table" 
         isVirtualized
-        removeWrapper
+        isStriped
         isCompact
         fullWidth
         radius='sm'
         selectionMode="single"
         selectionBehavior="replace"
         onSelectionChange={(set: any) => {
-          const index = set.entries().next().value[0] - 1;
-          props.onEdit(props.data[index])}
-        }
-        classNames={classNames}
+          const index: number = Array.from<number>(set)[0]
+          const selected = props.data[index - 1] ?? props.data.find((d) => d.id == index);
+          props.onEdit(selected)
+        }}
         topContent={props.topContent}
         bottomContent={tableOptions()}>
         <TableHeader columns={props.headers}>
@@ -85,6 +62,6 @@ export const ExpenseTable = (props: TableProps) => {
           )}
         </TableBody>
       </Table>
-    </>
+    </div>
   );
 };

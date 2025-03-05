@@ -1,3 +1,33 @@
+## 2.0.0 (2025-03-02)
+
+### breaking (1 change)
+
+- [Complete rewrite, converting to a NextJS application](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/f504e35fcce30c3e550c066e9b7ed467450a8be7) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/28))
+
+## 2.0.0-rc3 (2025-03-03)
+
+### breaking (1 change)
+
+- [Complete rewrite, converting to a NextJS application](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/f504e35fcce30c3e550c066e9b7ed467450a8be7) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/28))
+
+## 2.0.0-rc2 (2025-03-03)
+
+### breaking (1 change)
+
+- [Complete rewrite, converting to a NextJS application](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/f504e35fcce30c3e550c066e9b7ed467450a8be7) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/28))
+
+## 2.0.0-rc1 (2025-03-03)
+
+### breaking (1 change)
+
+- [Complete rewrite, converting to a NextJS application](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/f504e35fcce30c3e550c066e9b7ed467450a8be7) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/28))
+
+## 1.3.3 (2025-02-01)
+
+### fixed (1 change)
+
+- [Logging out now properly refreshes the page](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/69f53046ebf57e4e9be7e2eea6fd5b7459606566) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/27))
+
 ## 1.3.2 (2024-11-29)
 
 ### changed (1 change)

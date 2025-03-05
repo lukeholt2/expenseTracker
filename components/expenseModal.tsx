@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { addOrEditExpense, getCategories, getPaymentTypes } from "@/app/transactions/actions";
 import { Expense } from "@/models/expense";
 import { Modal, ModalContent, ModalHeader, ModalBody, 
@@ -9,7 +9,7 @@ import { toCalendarDate, parseAbsoluteToLocal, fromDate, today } from "@internat
 
 export default function ExpenseModal(props: any) {
 
-    const [expenseToSave, setExpenseToSave] = useState<Expense>(props.expense ?? new Expense())
+    const [expenseToSave, setExpenseToSave] = useState<Expense>(props.expense)
     const [categories, setCategories] = useState([]);
     const [paymentTypes, setPaymentTypes] = useState([]);
 
@@ -26,15 +26,15 @@ export default function ExpenseModal(props: any) {
     }, [])
 
     /** callback for emitting changes whether adding or editing a transaction */
-    const onAddOrEdit = () => {
+    const onAddOrEdit = useCallback(() => {
         const serialized = JSON.stringify(expenseToSave)
         console.log(`Adding ${serialized}`);
         addOrEditExpense(serialized, expenseToSave.id > 0)
             .then(() => props.onSave());
-    }
+    }, [])
 
     /** Try to parse the given date into something displayable */
-    const parseDate = () => {
+    const parseDate = useMemo(() => {
         let date: any = today('UTC');
         try{
             date = parseAbsoluteToLocal(expenseToSave?.date.toString())
@@ -42,17 +42,17 @@ export default function ExpenseModal(props: any) {
             date = fromDate(new Date(Date.parse(expenseToSave?.date.toString())), 'UTC')
         }
         return toCalendarDate(date);
-    }
+    }, [])
 
     return (
-        <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
+        <Modal onClose={props.onclose} isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
             <ModalContent>
                 {(onClose) => (
                     <>
                         <ModalHeader className="flex flex-col gap-1">{expenseToSave?.id > 0 ? 'Edit' : 'Add'} Expense</ModalHeader>
                         <ModalBody>
                             <DatePicker
-                                defaultValue={parseDate()}
+                                defaultValue={parseDate}
                                 onChange={(val) => {
                                     expenseToSave.date = new Date(val?.toString() ?? 0);
                                     setExpenseToSave(expenseToSave);

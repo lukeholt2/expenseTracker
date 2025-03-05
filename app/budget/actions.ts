@@ -2,7 +2,7 @@
 import { cookies } from "next/headers";
 
 function baseEndpoint() {
-  return `${process.env.NEXT_PUBLIC_API_URL}/expense`;
+  return `${process.env.API_URL}/expense`;
 }
 
 export async function getBudget() {

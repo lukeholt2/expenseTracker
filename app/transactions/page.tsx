@@ -5,6 +5,8 @@ import { getCategories, getExpenses } from "@/app/transactions/actions";
 import { Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
 import { Expense } from "@/models/expense";
 import ExpenseModal from "@/components/expenseModal";
+import { Filter } from "@/models/filter";
+import { currencyFormatter } from "@/utils/constants";
 
 
 export default function Transactions() {
@@ -12,19 +14,25 @@ export default function Transactions() {
   const [expenseToSave, setExpenseToSave] = useState<Expense | null>(null)
   const [categories, setCategories] = useState<string[]>([]);
 
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filterOptions, setFilterOptions] = useState<Filter>(new Filter());
+
+  // TODO: replace this with a proper time span
+  const [timeFilter, setTimeFilter] = useState('Month');
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const loadState = useCallback(async () => {
-    setExpenses(await getExpenses(undefined, undefined, selectedCategory));
-    const categories: string[] = await getCategories();
-    setCategories(['All', ...categories])
-  }, [expenses, setExpenses, categories, setCategories, selectedCategory])
+    const expenses = await getExpenses(filterOptions.month, filterOptions.year, filterOptions.category);
+    setExpenses(expenses.reverse());
+    const fetchedCategories: string[] = await getCategories(filterOptions.month, filterOptions.year);
+    setCategories(['All', ...fetchedCategories])
+  }, [expenses, setExpenses, categories, setCategories, filterOptions])
+
 
   useEffect(() => {
     loadState()
-  }, [selectedCategory])
+  }, [filterOptions, timeFilter])
+
 
   const tableRows = [
     { key: 'date', label: 'Date' },
@@ -33,22 +41,26 @@ export default function Transactions() {
     { key: 'category', label: 'Category' }
   ]
 
-  const totalSpent = useMemo(() => expenses.map(e => e.amount).reduce((prev, current) => prev + current, 0), [expenses])
+  const timeFilters = ['All', 'Month', 'Year']
 
+  const totalSpent = useMemo(() => {
+    const total = expenses.map(e => e.amount).reduce((prev, current) => prev + current, 0);
+    return currencyFormatter.format(total);
+  }, [expenses])
 
-  const categoryFilter = () => {
+  const categoryFilter = useCallback(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <div className="flex gap-3">
             <Dropdown backdrop="blur">
               <DropdownTrigger>
-                <Button variant="bordered" size='sm' className="text-small">{selectedCategory}</Button>
+                <Button variant="bordered" size='sm' className="text-small">{filterOptions.category}</Button>
               </DropdownTrigger>
               <DropdownMenu
-                selectedKeys={[selectedCategory]}
+                selectedKeys={[filterOptions.category]}
                 selectionMode="single"
-                onSelectionChange={(key) => setSelectedCategory(key.anchorKey ?? 'All')}
+                onSelectionChange={(key) => setFilterOptions({ ...filterOptions, category: key.anchorKey ?? 'All' })}
                 aria-label="Category Filter"
                 variant="faded"
               >
@@ -56,16 +68,42 @@ export default function Transactions() {
               </DropdownMenu>
             </Dropdown>
           </div>
+          <div className="flex gap-3">
+            <Dropdown backdrop="blur">
+              <DropdownTrigger>
+                <Button variant="bordered" size='sm' className="text-small">{timeFilter}</Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                selectedKeys={[timeFilter]}
+                selectionMode="single"
+                onSelectionChange={(key) => {
+                  const val = key.anchorKey;
+                  if (val == 'Year') {
+                    setFilterOptions({ ...filterOptions, month: undefined, year: new Date().getFullYear() });
+                  } else if (val == 'Month') {
+                    setFilterOptions({ ...new Filter(), category: filterOptions.category })
+                  } else {
+                    setFilterOptions({ ...filterOptions, month: undefined, year: undefined })
+                  }
+                  setTimeFilter(key.anchorKey ?? 'Month')
+                }}
+                aria-label="TimeSpan Filter"
+                variant="faded"
+              >
+                {timeFilters.map((cat) => <DropdownItem key={cat}>{cat}</DropdownItem>)}
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </div>
       </div>
     )
-  }
+  }, [timeFilter, setTimeFilter, categories, filterOptions, setFilterOptions])
 
   return (
     <>
-      <Card style={{marginBottom: '1em'}}>
+      <Card style={{ marginBottom: '1em' }}>
         <CardBody className="pt-4 px-4 flex-col items-center">
-          <h4>${totalSpent}</h4>
+          <h4>{totalSpent}</h4>
         </CardBody>
       </Card>
       {expenseToSave && <ExpenseModal

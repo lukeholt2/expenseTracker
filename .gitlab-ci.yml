@@ -42,7 +42,11 @@ deploy:
   rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
     - if: $FORCE_DEPLOY == "true"
+  before_script:
+    - apk update && apk add git
   script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password-stdin
     - docker build -f Dockerfile -t $CI_REGISTRY_IMAGE:$VERSION .
     - docker push $CI_REGISTRY_IMAGE:$VERSION
+  tags:
+    - docker
