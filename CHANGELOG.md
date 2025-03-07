@@ -1,3 +1,9 @@
+## 2.0.1 (2025-03-07)
+
+### changed (1 change)
+
+- [Replaces category dropdow w/ an autocomplete](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/cf4bcddcb88e78dde871e8e893291b41fb7e8b2e) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/30))
+
 ## 2.0.0 (2025-03-02)
 
 ### breaking (1 change)
