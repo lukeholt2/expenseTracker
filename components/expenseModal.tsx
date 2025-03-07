@@ -45,7 +45,12 @@ export default function ExpenseModal(props: any) {
     }, [])
 
     return (
-        <Modal onClose={props.onclose} isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
+        <Modal 
+            onClose={props.onclose}
+            isOpen={props.isOpen}
+            onOpenChange={props.onOpenChange}
+            placement="top-center"
+            isDismissable={false}>
             <ModalContent>
                 {(onClose) => (
                     <>
