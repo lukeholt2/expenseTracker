@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ExpenseTable } from '@/components/expenseTable';
 import { getCategories, getExpenses } from "@/app/transactions/actions";
-import { Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
+import { Autocomplete, AutocompleteItem, Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
 import { Expense } from "@/models/expense";
 import ExpenseModal from "@/components/expenseModal";
 import { Filter } from "@/models/filter";
@@ -53,20 +53,28 @@ export default function Transactions() {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <div className="flex gap-3">
-            <Dropdown backdrop="blur">
-              <DropdownTrigger>
-                <Button variant="bordered" size='sm' className="text-small">{filterOptions.category}</Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                selectedKeys={[filterOptions.category]}
-                selectionMode="single"
-                onSelectionChange={(key) => setFilterOptions({ ...filterOptions, category: key.anchorKey ?? 'All' })}
-                aria-label="Category Filter"
-                variant="faded"
-              >
-                {categories.map((cat) => <DropdownItem key={cat}>{cat}</DropdownItem>)}
-              </DropdownMenu>
-            </Dropdown>
+            <Autocomplete
+              classNames={{
+                base: "max-w-xs",
+                listboxWrapper: "max-h-[32px]"
+              }}
+              inputProps={{
+                classNames: {
+                  input: "ml-1",
+                  inputWrapper: "h-[12px]",
+                },
+              }}
+              isClearable={false}
+              size="sm"
+              variant="faded"
+              defaultInputValue="All"
+              defaultSelectedKey={filterOptions.category ?? 'All'}
+              defaultItems={categories.map((val: string) => { return { key: val, label: val } })}
+              onSelectionChange={(val) => {
+                setFilterOptions({ ...filterOptions, category: val?.toString() ?? 'All' })
+              }}>
+              {(item: any) => <AutocompleteItem key={item.key}>{item.label}</AutocompleteItem>}
+            </Autocomplete>
           </div>
           <div className="flex gap-3">
             <Dropdown backdrop="blur">

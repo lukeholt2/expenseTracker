@@ -14,8 +14,12 @@ export default function Navigation() {
 
   const router = useRouter();
   const pathName = usePathname();
-
+  
   const [value, setValue] = useState(pathName == '/budget' ? 0 : 1);
+
+  useEffect(() => {
+    setValue(pathName == '/budget' ? 0 : 1);
+  }, [pathName, setValue])
 
 
   return (
