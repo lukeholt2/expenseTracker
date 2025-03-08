@@ -1,3 +1,9 @@
+## 2.0.2 (2025-03-07)
+
+### changed (1 change)
+
+- [Revert back to using _scrollable_ dropdown](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/2cf0fd67b173d6bed971d29b4e57656aedcbd5c7) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/31))
+
 ## 2.0.1 (2025-03-07)
 
 ### changed (1 change)
