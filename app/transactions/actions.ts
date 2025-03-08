@@ -49,7 +49,6 @@ export async function getExpenses(monthOfInterest?: number, yearOfInterest?: num
   if (category) {
     endpoint = `${endpoint}&category=${category}`;
   }
-  console.log(endpoint)
   const res = await fetch(endpoint, {
     headers: {
       'Content-type': 'application/json',
