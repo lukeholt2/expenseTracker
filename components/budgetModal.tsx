@@ -26,16 +26,28 @@ export default function BudgetModal(props: any) {
                             <Input
                                 label={"Category"}
                                 value={category}
+                                size="lg"
+                                classNames={{
+                                    input:[
+                                        "text-[16px]"
+                                    ]
+                                }}
                                 onChange={(e) => setCategory(e.target.value)}>
                             </Input>
                             <Input
                                 label={"Budget"}
                                 value={amount}
                                 type="number"
+                                size="lg"
+                                classNames={{
+                                    input:[
+                                        "text-[16px]"
+                                    ]
+                                }}
                                 onChange={(e) => setAmount(e.target.value)}
                                 startContent={
                                     <div className="pointer-events-none flex items-center">
-                                        <span className="text-default-400 text-small">$</span>
+                                        <span className="text-default-400 text-[16px]">$</span>
                                     </div>}>
                             </Input>
 
