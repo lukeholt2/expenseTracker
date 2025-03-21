@@ -58,11 +58,22 @@ export default function ExpenseModal(props: any) {
                         <ModalBody>
                             <DatePicker
                                 defaultValue={parseDate}
+                                timeInputProps={{
+                                    classNames:{
+                                        input: "text-[16px]"
+                                    }
+                                }}
                                 onChange={(val) => {
                                     expenseToSave.date = new Date(val?.toString() ?? 0);
                                     setExpenseToSave(expenseToSave);
                                 }}></DatePicker>
                             <Input label={"Amount"} type="number"
+                                size="lg"
+                                classNames={{
+                                    input:[
+                                        "text-[16px]"
+                                    ]
+                                }}
                                 defaultValue={expenseToSave?.amount.toString()}
                                 onChange={(e) => {
                                     expenseToSave.amount = +e.target.value;
@@ -70,17 +81,29 @@ export default function ExpenseModal(props: any) {
                                 }}
                                 startContent={
                                     <div className="pointer-events-none flex items-center">
-                                        <span className="text-default-400 text-small">$</span>
+                                        <span className="text-default-400 text-[16px]">$</span>
                                     </div>}>
                             </Input>
                             <Input label={"Location"}
                                 defaultValue={expenseToSave?.location}
+                                size="lg"
+                                classNames={{
+                                    input:[
+                                        "text-[16px]"
+                                    ]
+                                }}
                                 onChange={(e) => {
                                     expenseToSave.location = e.target.value;
                                     setExpenseToSave(expenseToSave)
                                 }}></Input>
                             <Input label={"Item"}
                                 defaultValue={expenseToSave?.item}
+                                size="lg"
+                                classNames={{
+                                    input:[
+                                        "text-[16px]"
+                                    ]
+                                }}
                                 onChange={(e) => {
                                     expenseToSave.item = e.target.value;
                                     setExpenseToSave(expenseToSave)
@@ -89,6 +112,12 @@ export default function ExpenseModal(props: any) {
                                 defaultInputValue={expenseToSave?.category}
                                 defaultItems={categories}
                                 allowsCustomValue
+                                size="lg"
+                                inputProps={{
+                                    classNames:{
+                                        input: "text-[16px]"
+                                    }
+                                }}
                                 label={"Category"}
                                 onSelectionChange={(val) => {
                                     expenseToSave.category = val?.toString() ?? "";
@@ -104,6 +133,12 @@ export default function ExpenseModal(props: any) {
                                 defaultInputValue={expenseToSave?.paymentType}
                                 defaultItems={paymentTypes}
                                 allowsCustomValue
+                                size="lg"
+                                inputProps={{
+                                    classNames:{
+                                        input: "text-[16px]"
+                                    }
+                                }}
                                 label={"Payment Type"}
                                 onSelectionChange={(val) => {
                                     expenseToSave.paymentType = val?.toString() ?? "";
