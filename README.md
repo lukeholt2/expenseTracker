@@ -4,7 +4,7 @@
 
 ## Development
 
-As mentioned above, the project is written in Angular and thus can simple be installed using `npm`:
+The project is built using `Nextjs` and thus can simply be installed using `npm`:
 
 ```script
 npm i
