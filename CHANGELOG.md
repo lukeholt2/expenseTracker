@@ -1,3 +1,9 @@
+## 2.0.3 (2025-03-21)
+
+### fixed (1 change)
+
+- [Increases modal font size to prevet IOS auto focus](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/commit/6ec4262a9874230e68989006e187f8f797062cf9) ([merge request](https://gitlab.internal.oasis.com/gitlab-instance-8c9d9f19/plutus/-/merge_requests/32))
+
 ## 2.0.2 (2025-03-07)
 
 ### changed (1 change)
